@@ -20,9 +20,10 @@ interface CategoryPageProps {
   params: {
     slug: string
   }
+  initialData?: any
 }
 
-export default function CategoryClientPage({ params }: CategoryPageProps) {
+export default function CategoryClientPage({ params, initialData }: CategoryPageProps) {
   const categorySlug = params.slug
   const categoryName = categorySlug.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase())
 

@@ -17,9 +17,10 @@ interface CategoryClientPageProps {
   params: {
     category: string
   }
+  initialData?: any[]
 }
 
-export default function CategoryClientPage({ params }: CategoryClientPageProps) {
+export default function CategoryClientPage({ params, initialData }: CategoryClientPageProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [sortBy, setSortBy] = useState("name")
   const [filteredProducts, setFilteredProducts] = useState<any[]>([])

@@ -1,29 +1,51 @@
 "use client"
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
 import { ChevronLeft, ChevronRight, Star, Heart, ShoppingCart } from "lucide-react"
 import { useCart } from "@/contexts/cart-context"
 import { useWishlist } from "@/contexts/wishlist-context"
-import useMobileCollection from "@/lib/firebase-hooks"
+import { useFastMobileCollection } from "@/lib/fast-firebase-hooks"
+import { FastImage, ImagePreloader } from "@/components/optimized-image"
+import { ProductDetailsSkeleton } from "@/components/ui/enhanced-skeleton"
+import dynamic from "next/dynamic"
+
+// Dynamic imports for heavy components
+const Header = dynamic(() => import("@/components/header").then(mod => ({ default: mod.Header })), {
+  loading: () => <div className="h-20 bg-primary animate-pulse" />,
+  ssr: true
+})
+
+const Footer = dynamic(() => import("@/components/footer").then(mod => ({ default: mod.Footer })), {
+  loading: () => <div className="h-32 bg-gray-100 animate-pulse" />,
+  ssr: false // Footer can be loaded after main content
+})
 
 interface MobilePageProps {
   mobileId: string
+  initialData?: any
 }
 
-export default function MobileClientPage({ mobileId }: MobilePageProps) {
+export default function MobileClientPage({ mobileId, initialData }: MobilePageProps) {
   console.log('MobileClientPage - Mobile ID from props:', mobileId)
   
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
   // Removed quantity state since we're removing the quantity selector
 
-  const { mobile, loading, error } = useMobileCollection(mobileId)
+  const { mobile, loading, error } = useFastMobileCollection(mobileId, initialData)
   const { addItem, addToCart } = useCart()
   const { addItem: addToWishlist, isInWishlist } = useWishlist()
   const { toast } = useToast()
+
+  // Image preloading effect for better performance
+  useEffect(() => {
+    if (mobile?.images && mobile.images.length > 0) {
+      // Preload all product images
+      ImagePreloader.preloadMultiple(mobile.images)
+        .catch(error => console.warn('Image preloading failed:', error))
+    }
+  }, [mobile?.images])
 
   const handleAddToCart = () => {
     if (mobile) {
@@ -73,123 +95,18 @@ export default function MobileClientPage({ mobileId }: MobilePageProps) {
   }
 
   if (loading) {
-    return (
-      <div className="flex flex-col min-h-screen bg-gradient-to-br from-orange-50 via-white to-yellow-50 shadow-inner relative overflow-hidden pt-24">
-        {/* ===== Optimized Modern Background Design Patterns ===== */}
-        
-        {/* Layer 1: Subtle Noise Texture (Base) */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="noise-texture-bg w-full h-full"></div>
-        </div>
-        
-        {/* Layer 2: Floating Dots Pattern */}
-        <div className="absolute inset-0 opacity-15">
-          <div className="floating-dots-bg w-full h-full"></div>
-        </div>
-        
-        {/* Layer 3: Liquid Blobs Effect with Animation */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="liquid-blobs-bg w-full h-full"></div>
-        </div>
-        
-        {/* Layer 4: Gradient Waves with Animation */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="gradient-waves-bg w-full h-full"></div>
-        </div>
-        
-        {/* Layer 5: Polygon Mesh */}
-        <div className="absolute inset-0 opacity-3">
-          <div className="polygon-mesh-bg w-full h-full"></div>
-        </div>
-        
-        {/* Layer 6: Hexagonal Grid */}
-        <div className="absolute inset-0 opacity-4">
-          <div className="hex-grid-bg w-full h-full"></div>
-        </div>
-        
-        {/* Layer 7: Organic Flow */}
-        <div className="absolute inset-0 opacity-8">
-          <div className="organic-flow-bg w-full h-full"></div>
-        </div>
-        
-        {/* Layer 8: Neon Highlights */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="neon-highlights-bg w-full h-full"></div>
-        </div>
-        
-        {/* Decorative Floating Elements */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-          {/* Large Floating Orbs */}
-          <div className="absolute top-20 left-10 w-64 h-64 rounded-full bg-gradient-to-r from-orange-200 to-amber-200 opacity-10 blur-3xl animate-float"></div>
-          <div className="absolute top-1/3 right-20 w-48 h-48 rounded-full bg-gradient-to-r from-yellow-200 to-orange-200 opacity-15 blur-3xl animate-float-delayed"></div>
-          <div className="absolute bottom-40 left-1/4 w-80 h-80 rounded-full bg-gradient-to-r from-amber-100 to-yellow-100 opacity-8 blur-3xl animate-float-reverse"></div>
-          
-          {/* Medium Geometric Shapes */}
-          <div className="absolute top-10 right-10 w-24 h-24 border-2 border-amber-300 rotate-45 opacity-10 animate-pulse"></div>
-          <div className="absolute bottom-20 left-20 w-20 h-20 border-2 border-orange-300 rounded-full opacity-15 animate-pulse-slow"></div>
-          <div className="absolute top-1/2 left-1/3 w-16 h-16 bg-gradient-to-r from-orange-200 to-amber-200 opacity-15 transform rotate-12"></div>
-          
-          {/* Small Decorative Elements */}
-          <div className="absolute top-1/4 right-1/4 w-12 h-12 bg-gradient-to-r from-amber-300 to-orange-300 opacity-20 transform rotate-45"></div>
-          <div className="absolute bottom-1/3 left-1/2 w-10 h-10 rounded-full bg-gradient-to-r from-yellow-300 to-amber-300 opacity-20"></div>
-          <div className="absolute top-3/4 right-1/3 w-8 h-8 border-2 border-orange-400 opacity-15 transform rotate-30"></div>
-          
-          {/* Gradient Overlays for Depth */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-orange-50/20 via-transparent to-amber-50/20"></div>
-        </div>
-        {/* ===== End Background Design Patterns ===== */}
-        
-        <Header />
-        <main className="flex-1 container mx-auto px-4 py-8 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="h-96 bg-white/30 rounded-xl glass-card backdrop-blur-sm border border-white/20 animate-pulse"></div>
-            <div className="space-y-6">
-              <div className="h-8 bg-white/30 rounded w-3/4 glass-card backdrop-blur-sm border border-white/20 animate-pulse"></div>
-              <div className="h-4 bg-white/30 rounded w-1/2 glass-card backdrop-blur-sm border border-white/20 animate-pulse"></div>
-              <div className="h-6 bg-white/30 rounded w-1/3 glass-card backdrop-blur-sm border border-white/20 animate-pulse"></div>
-              <div className="h-24 bg-white/30 rounded glass-card backdrop-blur-sm border border-white/20 animate-pulse"></div>
-              <div className="h-12 bg-white/30 rounded glass-card backdrop-blur-sm border border-white/20 animate-pulse"></div>
-            </div>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    )
+    return <ProductDetailsSkeleton />
   }
 
   if (error) {
     return (
       <div className="flex flex-col min-h-screen bg-gradient-to-br from-orange-50 via-white to-yellow-50 shadow-inner relative overflow-hidden pt-24">
-        {/* ===== Optimized Modern Background Design Patterns ===== */}
-        
-        {/* Layer 1: Subtle Noise Texture (Base) */}
-        <div className="absolute inset-0 opacity-20">
+        {/* Mobile-optimized minimal background */}
+        <div className="absolute inset-0 opacity-10">
           <div className="noise-texture-bg w-full h-full"></div>
         </div>
-        
-        {/* Layer 2: Floating Dots Pattern */}
-        <div className="absolute inset-0 opacity-15">
-          <div className="floating-dots-bg w-full h-full"></div>
-        </div>
-        
-        {/* Layer 3: Liquid Blobs Effect with Animation */}
-        <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0 opacity-5">
           <div className="liquid-blobs-bg w-full h-full"></div>
-        </div>
-        
-        {/* Layer 4: Gradient Waves with Animation */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="gradient-waves-bg w-full h-full"></div>
-        </div>
-        
-        {/* Layer 5: Polygon Mesh */}
-        <div className="absolute inset-0 opacity-3">
-          <div className="polygon-mesh-bg w-full h-full"></div>
-        </div>
-        
-        {/* Layer 6: Hexagonal Grid */}
-        <div className="absolute inset-0 opacity-4">
-          <div className="hex-grid-bg w-full h-full"></div>
         </div>
         
         {/* Layer 7: Organic Flow */}
@@ -249,36 +166,12 @@ export default function MobileClientPage({ mobileId }: MobilePageProps) {
   if (!mobile && !loading) {
     return (
       <div className="flex flex-col min-h-screen bg-gradient-to-br from-orange-50 via-white to-yellow-50 shadow-inner relative overflow-hidden pt-24">
-        {/* ===== Optimized Modern Background Design Patterns ===== */}
-        
-        {/* Layer 1: Subtle Noise Texture (Base) */}
-        <div className="absolute inset-0 opacity-20">
+        {/* Mobile-optimized minimal background */}
+        <div className="absolute inset-0 opacity-10">
           <div className="noise-texture-bg w-full h-full"></div>
         </div>
-        
-        {/* Layer 2: Floating Dots Pattern */}
-        <div className="absolute inset-0 opacity-15">
-          <div className="floating-dots-bg w-full h-full"></div>
-        </div>
-        
-        {/* Layer 3: Liquid Blobs Effect with Animation */}
-        <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0 opacity-5">
           <div className="liquid-blobs-bg w-full h-full"></div>
-        </div>
-        
-        {/* Layer 4: Gradient Waves with Animation */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="gradient-waves-bg w-full h-full"></div>
-        </div>
-        
-        {/* Layer 5: Polygon Mesh */}
-        <div className="absolute inset-0 opacity-3">
-          <div className="polygon-mesh-bg w-full h-full"></div>
-        </div>
-        
-        {/* Layer 6: Hexagonal Grid */}
-        <div className="absolute inset-0 opacity-4">
-          <div className="hex-grid-bg w-full h-full"></div>
         </div>
         
         {/* Layer 7: Organic Flow */}
@@ -410,32 +303,19 @@ export default function MobileClientPage({ mobileId }: MobilePageProps) {
         <div className="organic-flow-bg w-full h-full"></div>
       </div>
       
-      {/* Layer 8: Neon Highlights */}
+      {/* Mobile-optimized minimal background */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="noise-texture-bg w-full h-full"></div>
+      </div>
       <div className="absolute inset-0 opacity-5">
-        <div className="neon-highlights-bg w-full h-full"></div>
+        <div className="liquid-blobs-bg w-full h-full"></div>
       </div>
       
-      {/* Decorative Floating Elements */}
+      {/* Minimal decorative elements for mobile */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        {/* Large Floating Orbs */}
-        <div className="absolute top-20 left-10 w-64 h-64 rounded-full bg-gradient-to-r from-orange-200 to-amber-200 opacity-10 blur-3xl animate-float"></div>
-        <div className="absolute top-1/3 right-20 w-48 h-48 rounded-full bg-gradient-to-r from-yellow-200 to-orange-200 opacity-15 blur-3xl animate-float-delayed"></div>
-        <div className="absolute bottom-40 left-1/4 w-80 h-80 rounded-full bg-gradient-to-r from-amber-100 to-yellow-100 opacity-8 blur-3xl animate-float-reverse"></div>
-        
-        {/* Medium Geometric Shapes */}
-        <div className="absolute top-10 right-10 w-24 h-24 border-2 border-amber-300 rotate-45 opacity-10 animate-pulse"></div>
-        <div className="absolute bottom-20 left-20 w-20 h-20 border-2 border-orange-300 rounded-full opacity-15 animate-pulse-slow"></div>
-        <div className="absolute top-1/2 left-1/3 w-16 h-16 bg-gradient-to-r from-orange-200 to-amber-200 opacity-15 transform rotate-12"></div>
-        
-        {/* Small Decorative Elements */}
-        <div className="absolute top-1/4 right-1/4 w-12 h-12 bg-gradient-to-r from-amber-300 to-orange-300 opacity-20 transform rotate-45"></div>
-        <div className="absolute bottom-1/3 left-1/2 w-10 h-10 rounded-full bg-gradient-to-r from-yellow-300 to-amber-300 opacity-20"></div>
-        <div className="absolute top-3/4 right-1/3 w-8 h-8 border-2 border-orange-400 opacity-15 transform rotate-30"></div>
-        
-        {/* Gradient Overlays for Depth */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-orange-50/20 via-transparent to-amber-50/20"></div>
+        <div className="absolute top-20 left-10 w-32 h-32 rounded-full bg-gradient-to-r from-orange-300 to-amber-400 opacity-10 blur-2xl"></div>
+        <div className="absolute bottom-40 right-10 w-32 h-32 rounded-full bg-gradient-to-r from-yellow-300 to-orange-400 opacity-10 blur-2xl"></div>
       </div>
-      {/* ===== End Background Design Patterns ===== */}
       
       <Header />
       <main className="flex-1 container mx-auto px-4 py-6 relative">
@@ -463,7 +343,13 @@ export default function MobileClientPage({ mobileId }: MobilePageProps) {
                   idx === selectedImageIndex ? 'border-blue-500' : 'border-gray-200'
                 } floating-card transition-all duration-300 hover:shadow-lg`}
               >
-                <img src={image || "/placeholder.svg"} alt={`${mobile.name || mobile.Name || mobile.title || mobile.Title || mobile.id} ${idx + 1}`} className="object-cover w-full h-full" />
+                <FastImage 
+                  src={image || "/placeholder.svg"} 
+                  alt={`${mobile.name || mobile.Name || mobile.title || mobile.Title || mobile.id} ${idx + 1}`} 
+                  className="w-full h-full" 
+                  width={64}
+                  height={64}
+                />
               </button>
             ))}
           </div>
@@ -473,10 +359,12 @@ export default function MobileClientPage({ mobileId }: MobilePageProps) {
             <div className="relative w-full h-[400px] lg:h-[500px] bg-gray-50 rounded-xl flex items-center justify-center border floating-card overflow-hidden">
               {/* Decorative element for main image card */}
               <div className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-orange-100 to-amber-100 rounded-full opacity-20 blur-2xl"></div>
-              <img 
+              <FastImage 
                 src={images[selectedImageIndex] || "/placeholder.svg"} 
                 alt={mobile.name || mobile.Name || mobile.title || mobile.Title || mobile.id || 'Product'} 
-                className="object-contain w-full h-full p-4" 
+                className="w-full h-full p-4" 
+                width={400}
+                height={400}
               />
               {/* Navigation arrows */}
               {images.length > 1 && (

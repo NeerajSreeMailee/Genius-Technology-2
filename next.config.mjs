@@ -7,7 +7,22 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true,
+    unoptimized: false,
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 86400, // 24 hours
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    domains: ['localhost'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+    // Aggressive optimization
+    loader: 'default',
   },
   // Enable React strict mode for better performance
   reactStrictMode: true,
@@ -16,7 +31,8 @@ const nextConfig = {
   // Optimize fonts for better performance
   experimental: {
     optimizeCss: true,
-    // Removed optimizeServerBuild as it's not recognized
+    webVitalsAttribution: ['FCP', 'LCP', 'CLS', 'FID', 'TTFB'],
+    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
   },
   // Configure webpack for better performance
   webpack: (config, { dev, isServer }) => {

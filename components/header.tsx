@@ -16,16 +16,36 @@ export function Header() {
   const [isProductsOpen, setIsProductsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   const { user, logout } = useAuth()
   const { getTotalItems } = useCart()
   const { items: wishlistItems } = useWishlist()
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0)
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
     }
-    window.addEventListener("scroll", handleScroll)
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  useEffect(() => {
+    let ticking = false
+    
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 0)
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+    
+    window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 

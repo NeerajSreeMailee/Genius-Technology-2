@@ -568,6 +568,61 @@
   }
 }
 
+/* Mobile Performance Optimizations */
+@media (max-width: 768px) {
+  /* Disable heavy animations on mobile for better performance */
+  .animate-float,
+  .animate-float-delayed,
+  .animate-float-reverse,
+  .animate-pulse-slow {
+    animation: none !important;
+  }
+  
+  /* Simplify background animations */
+  .liquid-blobs-bg,
+  .gradient-waves-bg,
+  .floating-particles-bg,
+  .organic-flow-bg,
+  .wave-interference-bg,
+  .soft-waves-bg,
+  .abstract-flow-bg,
+  .mesh-gradient-bg,
+  .subtle-gradient-bg {
+    animation: none !important;
+  }
+  
+  /* Reduce blur effects on mobile */
+  .blur-3xl {
+    @apply blur-xl;
+  }
+  
+  .blur-2xl {
+    @apply blur-lg;
+  }
+  
+  /* Disable hover effects on mobile to improve scrolling performance */
+  .product-card:hover {
+    transform: none !important;
+  }
+  
+  .floating-card:hover {
+    transform: none !important;
+  }
+  
+  /* Reduce opacity of heavy background patterns */
+  .noise-texture-bg {
+    opacity: 0.3 !important;
+  }
+  
+  /* Disable unnecessary background patterns on mobile */
+  .crosshatch-bg,
+  .dotted-grid-bg,
+  .diamond-bg,
+  .bubble-bg {
+    background: none !important;
+  }
+}
+
 /* Print styles */
 @media print {
   .no-print {
