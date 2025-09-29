@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { cacheManager } from "./cache-manager"
 import {
   getProducts,
   getFeaturedProducts,
@@ -128,8 +129,24 @@ export function useBrands() {
   useEffect(() => {
     const fetchBrands = async () => {
       try {
+        // Create cache key
+        const cacheKey = 'brands-all'
+        
+        // Check cache first
+        const cachedData = cacheManager.get(cacheKey)
+        if (cachedData) {
+          console.log('useBrands - Using cached data')
+          setBrands(cachedData)
+          setLoading(false)
+          return
+        }
+
         setLoading(true)
         const data = await getBrands()
+        
+        // Cache the data for 5 minutes
+        cacheManager.set(cacheKey, data, 5)
+        
         setBrands(data)
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to fetch brands")
@@ -292,8 +309,24 @@ export function useMobileCollectionItems(limitCount: number = 6) {
   useEffect(() => {
     const fetchMobiles = async () => {
       try {
+        // Create cache key
+        const cacheKey = `mobile-collection-items-${limitCount}`
+        
+        // Check cache first
+        const cachedData = cacheManager.get(cacheKey)
+        if (cachedData) {
+          console.log('useMobileCollectionItems - Using cached data')
+          setMobiles(cachedData)
+          setLoading(false)
+          return
+        }
+
         setLoading(true)
         const data = await getMobileCollectionItems(limitCount)
+        
+        // Cache the data for 3 minutes
+        cacheManager.set(cacheKey, data, 3)
+        
         setMobiles(data)
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to fetch mobile items")

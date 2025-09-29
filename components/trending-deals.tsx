@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo, useCallback, memo } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Heart, ShoppingCart, Clock } from "lucide-react"
@@ -10,6 +10,7 @@ import { useCart } from "@/contexts/cart-context"
 import { useWishlist } from "@/contexts/wishlist-context"
 import { useToast } from "@/hooks/use-toast"
 import { useMobileCollectionItems } from "@/lib/firebase-hooks"
+import { useIsMobile, useMobileIntersectionObserver, getMobileImageProps } from "@/lib/mobile-utils"
 import type { StaticImageData } from "next/image"
 
 interface Deal {
@@ -27,47 +28,64 @@ interface Deal {
   sold?: number
 }
 
-export function TrendingDeals() {
+export const TrendingDeals = memo(function TrendingDeals() {
   const { addItem } = useCart()
   const { addItem: addToWishlist, isInWishlist } = useWishlist()
   const { toast } = useToast()
-  const { mobiles, loading, error } = useMobileCollectionItems(6)
-  const [deals, setDeals] = useState<Deal[]>([])
-
-  // Transform mobile data to deals format
+  const { isMobile, isLoading: mobileLoading } = useIsMobile()
+  
+  // Reduce items on mobile for better performance
+  const itemLimit = isMobile ? 4 : 6
+  const { mobiles, loading, error } = useMobileCollectionItems(itemLimit)
+  
+  // Use single state update instead of separate timer states
+  const [currentTime, setCurrentTime] = useState(Date.now())
+  
+  // Update time less frequently on mobile to reduce CPU usage
   useEffect(() => {
-    if (mobiles && mobiles.length > 0) {
-      const transformedDeals = mobiles.map((mobile: any) => {
-        const originalPrice = mobile.originalPrice || mobile.price * 1.2 || 0
-        const salePrice = mobile.price || mobile.salePrice || 0
-        const discount = originalPrice > 0 ? Math.round(((originalPrice - salePrice) / originalPrice) * 100) : 0
-        
-        return {
-          id: mobile.id,
-          name: mobile.name || 'Unnamed Product',
-          brand: mobile.brand || mobile.Brand || '',
-          image: (mobile.images && mobile.images[0]) || mobile.image || '/placeholder.svg',
-          originalPrice: originalPrice,
-          salePrice: salePrice,
-          discount: discount,
-          timeLeft: Math.floor(Math.random() * 86400) + 3600, // Random time between 1-25 hours
-          stock: mobile.stock || 1,
-          sold: Math.floor(Math.random() * 50) + 10, // Random sold count
-        }
-      }).filter(deal => deal.salePrice > 0) // Only show products with valid prices
+    if (mobileLoading) return
+    
+    const interval = isMobile ? 3000 : 1000 // Update every 3 seconds on mobile vs 1 second on desktop
+    const timer = setInterval(() => {
+      setCurrentTime(Date.now())
+    }, interval)
+    return () => clearInterval(timer)
+  }, [isMobile, mobileLoading])
+
+  // Memoize transformed deals to prevent unnecessary recalculations
+  const deals = useMemo(() => {
+    if (!mobiles || mobiles.length === 0) return []
+    
+    return mobiles.map((mobile: any) => {
+      const originalPrice = mobile.originalPrice || mobile.price * 1.2 || 0
+      const salePrice = mobile.price || mobile.salePrice || 0
+      const discount = originalPrice > 0 ? Math.round(((originalPrice - salePrice) / originalPrice) * 100) : 0
       
-      setDeals(transformedDeals)
-    }
+      return {
+        id: mobile.id,
+        name: mobile.name || 'Unnamed Product',
+        brand: mobile.brand || mobile.Brand || '',
+        image: (mobile.images && mobile.images[0]) || mobile.image || '/placeholder.svg',
+        originalPrice: originalPrice,
+        salePrice: salePrice,
+        discount: discount,
+        rating: mobile.rating || 4.5,
+        reviewCount: mobile.reviewCount || Math.floor(Math.random() * 200) + 50,
+        timeLeft: Math.floor(Math.random() * 86400) + 3600, // Random time between 1-25 hours
+        stock: mobile.stock || 1,
+        sold: Math.floor(Math.random() * 50) + 10, // Random sold count
+      }
+    }).filter(deal => deal.salePrice > 0) // Only show products with valid prices
   }, [mobiles])
 
-  const formatTime = (seconds: number) => {
+  const formatTime = useCallback((seconds: number) => {
     const hours = Math.floor(seconds / 3600)
     const minutes = Math.floor((seconds % 3600) / 60)
     const secs = seconds % 60
     return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`
-  }
+  }, [])
 
-  const handleAddToCart = (deal: Deal) => {
+  const handleAddToCart = useCallback((deal: Deal) => {
     addItem({
       id: deal.id,
       productId: deal.id,
@@ -81,9 +99,9 @@ export function TrendingDeals() {
       title: "Added to Cart!",
       description: `${deal.name} has been added to your cart.`,
     })
-  }
+  }, [addItem, toast])
 
-  const handleAddToWishlist = (deal: Deal) => {
+  const handleAddToWishlist = useCallback((deal: Deal) => {
     addToWishlist({
       id: deal.id,
       productId: deal.id,
@@ -96,7 +114,24 @@ export function TrendingDeals() {
       title: isInWishlist(deal.id) ? "Removed from Wishlist" : "Added to Wishlist",
       description: `${deal.name} has been ${isInWishlist(deal.id) ? "removed from" : "added to"} your wishlist.`,
     })
-  }
+  }, [addToWishlist, toast, isInWishlist])
+
+  // Loading skeleton component - simplified for mobile
+  const LoadingSkeleton = () => (
+    <div className={`grid gap-4 mb-8 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3'}`}>
+      {[...Array(isMobile ? 2 : 6)].map((_, index) => (
+        <div key={index} className={`bg-white rounded-2xl shadow-[0_4px_24px_0_rgba(0,0,0,0.10)] border border-[#ECECEC] flex flex-col animate-pulse ${isMobile ? 'min-h-[300px]' : 'min-h-[480px]'}`}>
+          <div className="px-6 pt-6 pb-2">
+            <div className="h-6 bg-gray-200 rounded mb-2"></div>
+            <div className={`bg-gray-200 rounded mb-4 ${isMobile ? 'h-24' : 'h-40'}`}></div>
+            <div className="h-4 bg-gray-200 rounded mb-2"></div>
+            <div className="h-4 bg-gray-200 rounded mb-2 w-3/4"></div>
+            <div className="h-6 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
 
   return (
   <section className="py-16 bg-gradient-to-b from-[#FFFBEA] to-white">
@@ -113,12 +148,7 @@ export function TrendingDeals() {
         </div>
 
         {/* Loading State */}
-        {loading && (
-          <div className="flex justify-center items-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#004AAD]"></div>
-            <span className="ml-2 text-[#004AAD]">Loading deals...</span>
-          </div>
-        )}
+        {loading && <LoadingSkeleton />}
 
         {/* Error State */}
         {error && (
@@ -127,17 +157,20 @@ export function TrendingDeals() {
           </div>
         )}
 
-        {/* Deals Grid */}
+        {/* Deals Grid - Mobile optimized */}
         {!loading && !error && deals.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 mb-8">
-            {deals.map((deal) => (
+          <div className={`grid gap-4 mb-8 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3'}`}>
+            {deals.map((deal, index) => (
               <Link key={deal.id} href={`/mobile/${deal.id}`} className="block group focus:outline-none focus:ring-2 focus:ring-[#004AAD] rounded-2xl">
-                <DealCard
+                <MobileDealCard
                   deal={deal}
-                  onAddToCart={(e) => { e.stopPropagation(); handleAddToCart(deal); }}
-                  onAddToWishlist={(e) => { e.stopPropagation(); handleAddToWishlist(deal); }}
+                  onAddToCart={(e: React.MouseEvent) => { e.stopPropagation(); handleAddToCart(deal); }}
+                  onAddToWishlist={(e: React.MouseEvent) => { e.stopPropagation(); handleAddToWishlist(deal); }}
                   isInWishlist={isInWishlist(deal.id)}
                   formatTime={formatTime}
+                  currentTime={currentTime}
+                  isMobile={isMobile}
+                  isLazyLoaded={isMobile && index > 1} // Only lazy load cards below the fold on mobile
                 />
               </Link>
             ))}
@@ -150,106 +183,139 @@ export function TrendingDeals() {
             <p className="text-gray-500">No deals available at the moment.</p>
           </div>
         )}
-
-        {/* View All Button
-        <div className="text-center">
-          <Link href="/deals">
-            <Button size="lg" variant="outline" className="px-8 py-3 bg-transparent">
-              View All Deals →
-            </Button>
-          </Link>
-        </div> */}
       </div>
     </section>
   )
-}
+})
 
-function DealCard({
+const MobileDealCard = memo(function MobileDealCard({
   deal,
   onAddToCart,
   onAddToWishlist,
   isInWishlist,
   formatTime,
+  currentTime,
+  isMobile,
+  isLazyLoaded = false,
 }: {
   deal: Deal
   onAddToCart: (e: React.MouseEvent) => void
   onAddToWishlist: (e: React.MouseEvent) => void
   isInWishlist: boolean
   formatTime: (seconds: number) => string
+  currentTime: number
+  isMobile: boolean
+  isLazyLoaded?: boolean
 }) {
-  const [timeLeft, setTimeLeft] = useState(deal.timeLeft)
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => Math.max(0, prev - 1))
-    }, 1000)
-
-    return () => clearInterval(timer)
-  }, [])
+  const [setRef, isInView] = useMobileIntersectionObserver()
+  
+  // Calculate time left based on current time instead of individual timers
+  const timeLeft = useMemo(() => {
+    const elapsed = Math.floor((currentTime - Date.now()) / 1000)
+    return Math.max(0, deal.timeLeft + elapsed)
+  }, [currentTime, deal.timeLeft])
 
   // Calculate progress percent
-  const total = deal.stock + (deal.sold || 0);
-  const percent = total > 0 && deal.sold ? Math.round((deal.sold / total) * 100) : 0;
-  return (
-    <div className="bg-white rounded-2xl shadow-[0_4px_24px_0_rgba(0,0,0,0.10)] border border-[#ECECEC] flex flex-col min-h-[480px]">
-      {/* Top Row: Timer & Wishlist */}
-      <div className="flex items-center justify-between px-6 pt-6">
-        <div className="flex items-center">
-          <div className="bg-[#004AAD] rounded-full px-4 py-1 flex items-center text-white text-base font-semibold">
-            <Clock size={18} className="mr-2 text-white" />
-            {formatTime(timeLeft)}
-          </div>
+  const percent = useMemo(() => {
+    const total = deal.stock + (deal.sold || 0)
+    return total > 0 && deal.sold ? Math.round((deal.sold / total) * 100) : 0
+  }, [deal.stock, deal.sold])
+
+  // Don't render until in view if lazy loaded
+  if (isLazyLoaded && !isInView) {
+    return (
+      <div 
+        ref={setRef} 
+        className={`bg-white rounded-2xl shadow-[0_4px_24px_0_rgba(0,0,0,0.10)] border border-[#ECECEC] flex flex-col ${isMobile ? 'min-h-[300px]' : 'min-h-[480px]'} animate-pulse`}
+      >
+        <div className="flex-1 flex items-center justify-center">
+          <div className="w-6 h-6 border-2 border-[#004AAD] border-t-transparent rounded-full animate-spin"></div>
         </div>
+      </div>
+    )
+  }
+
+  return (
+    <div 
+      ref={setRef}
+      className={`bg-white rounded-2xl shadow-[0_4px_24px_0_rgba(0,0,0,0.10)] border border-[#ECECEC] flex flex-col ${isMobile ? 'min-h-[300px]' : 'min-h-[480px]'}`}
+      style={isMobile ? { willChange: 'auto' } : undefined} // Optimize for mobile
+    >
+      {/* Top Row: Timer & Wishlist - Simplified on mobile */}
+      <div className={`flex items-center justify-between px-4 pt-4 ${isMobile ? 'px-3 pt-3' : 'px-6 pt-6'}`}>
+        {!isMobile && ( // Hide timer on mobile to reduce CPU usage
+          <div className="flex items-center">
+            <div className="bg-[#004AAD] rounded-full px-3 py-1 flex items-center text-white text-sm font-semibold">
+              <Clock size={16} className="mr-1 text-white" />
+              {formatTime(timeLeft)}
+            </div>
+          </div>
+        )}
         <button
           onClick={onAddToWishlist}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow hover:bg-[#FFCC01] hover:text-[#004AAD] transition-colors duration-200 border border-[#ECECEC]"
+          className={`flex items-center justify-center rounded-full bg-white shadow hover:bg-[#FFCC01] hover:text-[#004AAD] transition-colors duration-200 border border-[#ECECEC] ${isMobile ? 'w-8 h-8' : 'w-10 h-10'}`}
           title={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+          style={isMobile ? { touchAction: 'manipulation' } : undefined} // Optimize for touch
         >
-          <Heart size={22} className={isInWishlist ? "text-[#004AAD] fill-[#FFCC01]" : "text-[#004AAD]"} />
+          <Heart size={isMobile ? 18 : 22} className={isInWishlist ? "text-[#004AAD] fill-[#FFCC01]" : "text-[#004AAD]"} />
         </button>
       </div>
 
-      {/* Product Image */}
-      <div className="flex items-center justify-center h-40 mt-2 mb-2">
+      {/* Product Image - Smaller on mobile */}
+      <div className={`flex items-center justify-center mt-2 mb-2 ${isMobile ? 'h-24' : 'h-40'}`}>
         <Image
-          src={deal.image || "/placeholder.svg"}
-          alt={deal.name}
-          width={150}
-          height={150}
+          {...getMobileImageProps(deal.image || "/placeholder.svg", deal.name, isMobile)}
+          width={isMobile ? 80 : 150}
+          height={isMobile ? 80 : 150}
           className="object-contain"
         />
       </div>
 
-      {/* Content */}
-      <div className="flex-1 flex flex-col px-6 pb-6">
+      {/* Content - Condensed on mobile */}
+      <div className={`flex-1 flex flex-col pb-4 ${isMobile ? 'px-3' : 'px-6 pb-6'}`}>
         {/* Badges Row */}
-        <div className="flex items-center gap-3 mb-2">
-          <span className="bg-[#004AAD] text-white text-xs font-bold px-3 py-1 rounded-full">{deal.discount}% off</span>
-          <span className="text-[#004AAD] text-xs font-bold">Limited Time Deal</span>
+        <div className={`flex items-center gap-2 mb-2 ${isMobile ? 'gap-1 mb-1' : ''}`}>
+          <span className={`bg-[#004AAD] text-white font-bold px-2 py-1 rounded-full ${isMobile ? 'text-xs px-2' : 'text-xs px-3'}`}>
+            {deal.discount}% off
+          </span>
+          {!isMobile && (
+            <span className="text-[#004AAD] text-xs font-bold">Limited Time Deal</span>
+          )}
         </div>
-        {/* Product Name */}
-        <h3 className="font-bold text-[#004AAD] text-lg mb-1">{deal.name}</h3>
-        {/* Brand */}
-        {deal.brand && (
+        
+        {/* Product Name - Truncated on mobile */}
+        <h3 className={`font-bold text-[#004AAD] mb-1 ${isMobile ? 'text-sm line-clamp-2' : 'text-lg'}`}>
+          {deal.name}
+        </h3>
+        
+        {/* Brand - Hidden on mobile to save space */}
+        {!isMobile && deal.brand && (
           <p className="text-sm text-[#4A6FA1] mb-2">{deal.brand}</p>
         )}
+        
         {/* Price Row */}
-        <div className="flex items-end justify-between mb-2">
+        <div className={`flex items-end justify-between mb-2 ${isMobile ? 'mb-1' : ''}`}>
           <div>
-            <span className="text-[#004AAD] text-xl font-bold mr-2">₹{deal.salePrice}</span>
-            <span className="text-gray-400 line-through text-sm">₹{deal.originalPrice}</span>
+            <span className={`text-[#004AAD] font-bold mr-2 ${isMobile ? 'text-lg' : 'text-xl'}`}>
+              ₹{deal.salePrice}
+            </span>
+            <span className={`text-gray-400 line-through ${isMobile ? 'text-xs' : 'text-sm'}`}>
+              ₹{deal.originalPrice}
+            </span>
           </div>
           <Button
             onClick={onAddToCart}
-            className="w-10 h-10 p-0 bg-[#004AAD] hover:bg-[#FFCC01] text-white hover:text-[#004AAD] rounded-full flex items-center justify-center text-xl font-bold shadow-none"
+            className={`p-0 bg-[#004AAD] hover:bg-[#FFCC01] text-white hover:text-[#004AAD] rounded-full flex items-center justify-center font-bold shadow-none ${isMobile ? 'w-8 h-8 text-lg' : 'w-10 h-10 text-xl'}`}
             disabled={deal.stock === 0}
             title={deal.stock === 0 ? 'Out of Stock' : 'Add to cart'}
+            style={isMobile ? { touchAction: 'manipulation' } : undefined}
           >
             +
           </Button>
         </div>
-        {/* Progress Bar - only show if sold data is available */}
-        {deal.sold && (
+        
+        {/* Progress Bar - Simplified on mobile */}
+        {deal.sold && !isMobile && (
           <div className="flex items-center gap-2 mt-2">
             <div className="flex-1 h-2 rounded-full bg-[#E0E0E0] overflow-hidden">
               <div
@@ -262,5 +328,5 @@ function DealCard({
         )}
       </div>
     </div>
-  );
-}
+  )
+})

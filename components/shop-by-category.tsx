@@ -1,8 +1,6 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
+import { memo, useState } from "react"
 import { useRouter } from "next/navigation"
 import { ProductCardDesign } from "./product-card-design"
 import Category1 from '../public/Category1.png'
@@ -24,7 +22,7 @@ interface Category {
   description: string
 }
 
-export function ShopByCategory() {
+export const ShopByCategory = memo(function ShopByCategory() {
   const router = useRouter()
   const [categories] = useState<Category[]>([
     {
@@ -81,4 +79,4 @@ export function ShopByCategory() {
       </div>
     </section>
   )
-}
+})

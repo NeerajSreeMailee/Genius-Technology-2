@@ -2,6 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mobile performance optimizations */
+@layer utilities {
+  /* Line clamping for mobile text truncation */
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  /* Mobile-optimized animations - reduced motion */
+  @media (max-width: 768px) {
+    * {
+      animation-duration: 0.3s !important;
+      animation-delay: 0s !important;
+    }
+    
+    .animate-spin {
+      animation-duration: 1s !important;
+    }
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

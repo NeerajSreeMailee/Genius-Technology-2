@@ -8,6 +8,7 @@ import { WishlistProvider } from "@/contexts/wishlist-context"
 import { ComparisonProvider } from "@/contexts/comparison-context"
 import { Toaster } from "@/components/ui/toaster"
 import { BackgroundPatterns } from "@/components/background-patterns"
+import { OptimizedPerformanceMonitor } from "@/components/performance-monitor"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -77,6 +78,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <BackgroundPatterns />
+        <OptimizedPerformanceMonitor />
         <AuthProvider>
           <CartProvider>
             <WishlistProvider>

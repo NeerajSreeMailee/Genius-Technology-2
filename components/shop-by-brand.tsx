@@ -1,11 +1,12 @@
 "use client"
 
+import { memo } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useBrands } from "@/lib/firebase-hooks"
 import { BackgroundPatterns } from "@/components/background-patterns"
 
-export function ShopByBrand() {
+export const ShopByBrand = memo(function ShopByBrand() {
   const { brands = [], loading } = useBrands()
 
   // defensive fallback
@@ -50,6 +51,9 @@ export function ShopByBrand() {
                     width={120}
                     height={60}
                     className="max-w-full max-h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                    loading="lazy"
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkrHB0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                   />
                 </div>
 
@@ -106,4 +110,4 @@ export function ShopByBrand() {
       </div>
     </section>
   )
-}
+})
