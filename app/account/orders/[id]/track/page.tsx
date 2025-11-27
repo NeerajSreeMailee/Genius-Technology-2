@@ -80,7 +80,8 @@ export default function OrderTrackingPage() {
         <Header />
         <div className="container mx-auto px-4 py-8">
           <div className="grid lg:grid-cols-4 gap-8">
-            <AccountSidebar />
+            <AccountSidebar activeTab="orders" onTabChange={() => {}} />
+
             <div className="lg:col-span-3">
               <div className="animate-pulse space-y-4">
                 <div className="h-8 bg-gray-200 rounded w-1/3"></div>
@@ -101,7 +102,7 @@ export default function OrderTrackingPage() {
         <Header />
         <div className="container mx-auto px-4 py-8">
           <div className="grid lg:grid-cols-4 gap-8">
-            <AccountSidebar />
+            <AccountSidebar activeTab="orders" onTabChange={() => {}} />
             <div className="lg:col-span-3">
               <Card>
                 <CardContent className="p-6 text-center">
@@ -139,7 +140,8 @@ export default function OrderTrackingPage() {
         </div>
 
         <div className="grid lg:grid-cols-4 gap-8">
-          <AccountSidebar />
+          <AccountSidebar activeTab="orders" onTabChange={() => {}} />
+
 
           <div className="lg:col-span-3">
             <Card>

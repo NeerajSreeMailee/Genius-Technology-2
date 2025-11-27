@@ -10,6 +10,8 @@ import { BackgroundPatterns } from "@/components/shared/background-patterns"
 import { MobilePerformanceOptimizer } from "@/components/shared/mobile-performance-optimizer"
 import { PerformanceMonitor } from "@/components/shared/performance-monitor"
 import { useInstantNavigation } from "@/lib/instant-navigation"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 
 interface LayoutClientProps {
   children: React.ReactNode
@@ -31,7 +33,7 @@ export function LayoutClient({ children }: LayoutClientProps) {
     initialize()
     
     return () => window.removeEventListener('resize', checkMobile)
-  }, [])
+  }, [initialize])
 
   return (
     <>
@@ -42,7 +44,13 @@ export function LayoutClient({ children }: LayoutClientProps) {
         <CartProvider>
           <WishlistProvider>
             <ComparisonProvider>
-              {children}
+              <div className="flex flex-col min-h-screen">
+                <Header />
+                <main className="flex-grow">
+                  {children}
+                </main>
+                <Footer />
+              </div>
               <Toaster />
             </ComparisonProvider>
           </WishlistProvider>

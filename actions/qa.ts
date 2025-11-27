@@ -20,8 +20,7 @@ async function getCurrentUserFromSession() {
     if (userDoc.exists) {
       return { id: userDoc.id, ...userDoc.data() } as { 
         id: string; 
-        firstName: string; 
-        lastName: string; 
+        name: string; 
         role: string;
         email: string;
       }
@@ -47,12 +46,17 @@ export async function submitQuestion(productId: string, formData: FormData) {
   }
 
   try {
-    const newQuestion: Omit<Question, "id" | "answers"> = {
+    const newQuestion: Omit<Question, "id"> = {
       productId,
       userId: user.id,
-      userName: `${user.firstName} ${user.lastName}`.trim() || user.email,
+      userName: user.name || user.email,
+      userEmail: user.email,
       question: questionText.trim(),
+      isAnswered: false,
+      answersCount: 0,
+      isVerifiedPurchase: false, // You can add logic to verify if user purchased this product
       createdAt: FieldValue.serverTimestamp() as any,
+      updatedAt: FieldValue.serverTimestamp() as any,
     }
 
     await db.collection("products").doc(productId).collection("questions").add(newQuestion)
@@ -80,11 +84,16 @@ export async function submitAnswer(productId: string, questionId: string, formDa
   try {
     const newAnswer: Omit<Answer, "id"> = {
       questionId,
+      productId,
       userId: user.id,
-      userName: `${user.firstName} ${user.lastName}`.trim() || user.email,
+      userName: user.name || user.email,
+      userEmail: user.email,
       answer: answerText.trim(),
+      isVerifiedPurchase: false, // You can add logic to verify if user purchased this product
+      isHelpful: false,
+      helpfulCount: 0,
       createdAt: FieldValue.serverTimestamp() as any,
-      isOfficial: user.role === "admin",
+      updatedAt: FieldValue.serverTimestamp() as any,
     }
 
     await db
@@ -94,6 +103,18 @@ export async function submitAnswer(productId: string, questionId: string, formDa
       .doc(questionId)
       .collection("answers")
       .add(newAnswer)
+
+    // Update the question's answersCount and isAnswered status
+    await db
+      .collection("products")
+      .doc(productId)
+      .collection("questions")
+      .doc(questionId)
+      .update({
+        isAnswered: true,
+        answersCount: FieldValue.increment(1),
+        updatedAt: FieldValue.serverTimestamp()
+      })
 
     return { success: true, message: "Your answer has been submitted successfully!" }
   } catch (error) {

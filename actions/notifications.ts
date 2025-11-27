@@ -94,7 +94,7 @@ export async function sendOrderConfirmationNotification(orderId: string) {
 
     const subject = `Order #${orderId.slice(-8)} Confirmed - Genius Technology`
     const emailBody = `
-      <h1>Thank you for your order, ${user.firstName}!</h1>
+      <h1>Thank you for your order, ${user.name}!</h1>
       <p>Your order #${orderId.slice(-8)} has been successfully placed and is being processed.</p>
       <p><strong>Order Total:</strong> ₹${order.total.toLocaleString()}</p>
       <p>You can view your order details here: <a href="${process.env.NEXT_PUBLIC_BASE_URL}/account/orders/${orderId}">View Order</a></p>
@@ -106,7 +106,7 @@ export async function sendOrderConfirmationNotification(orderId: string) {
     await sendEmail(user.email, subject, emailBody)
 
     if (user.phone) {
-      const smsMessage = `Hi ${user.firstName}, your Genius Technology order #${orderId.slice(-8)} for ₹${order.total.toLocaleString()} has been confirmed. Track it at ${process.env.NEXT_PUBLIC_BASE_URL}/account/orders/${orderId}`
+      const smsMessage = `Hi ${user.name}, your Genius Technology order #${orderId.slice(-8)} for ₹${order.total.toLocaleString()} has been confirmed. Track it at ${process.env.NEXT_PUBLIC_BASE_URL}/account/orders/${orderId}`
       await sendSMS(user.phone, smsMessage)
     }
 
@@ -187,10 +187,10 @@ export async function sendWelcomeNotification(userId: string) {
       return { success: false, message: "User email not found." }
     }
 
-    const subject = `Welcome to Genius Technology, ${user.firstName}!`
+    const subject = `Welcome to Genius Technology, ${user.name}!`
     const emailBody = `
       <h1>Welcome to Genius Technology!</h1>
-      <p>Dear ${user.firstName},</p>
+      <p>Dear ${user.name},</p>
       <p>Thank you for creating an account with Genius Technology. We're excited to have you join our community.</p>
       <p>Explore our wide range of electronics, gadgets, and tech accessories. We're sure you'll find something you love!</p>
       <p>Start shopping now: <a href="${process.env.NEXT_PUBLIC_BASE_URL}/products">Browse Products</a></p>
@@ -203,7 +203,7 @@ export async function sendWelcomeNotification(userId: string) {
     await sendEmail(user.email, subject, emailBody)
 
     if (user.phone) {
-      const smsMessage = `Welcome to Genius Technology, ${user.firstName}! Explore our products: ${process.env.NEXT_PUBLIC_BASE_URL}/products`
+      const smsMessage = `Welcome to Genius Technology, ${user.name}! Explore our products: ${process.env.NEXT_PUBLIC_BASE_URL}/products`
       await sendSMS(user.phone, smsMessage)
     }
 
@@ -236,6 +236,7 @@ export async function sendPasswordResetNotification(email: string) {
     return { success: false, message: "Failed to send password reset notification." }
   }
 }
+
 export async function sendCorporateInquiryConfirmation(
   inquiryId: string,
   contactEmail: string,

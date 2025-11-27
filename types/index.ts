@@ -39,20 +39,24 @@ export interface Product {
   description: string
   price: number
   originalPrice?: number
-  images: string[]
+  discount?: number
   category: string
   brand: string
-  sku: string
-  stock: number
+  images: string[]
+  inStock: boolean
+  stockQuantity: number
   rating: number
-  reviewCount: number
-  features: string[]
+  reviews: number  // Add this line
   specifications: Record<string, string>
-  isActive: boolean
-  isFeatured: boolean
+  features: string[]
+  isFeatured?: boolean
+  isNew?: boolean
+  isBestSeller?: boolean
+  tags?: string[]
   createdAt: Date
   updatedAt: Date
 }
+
 
 export interface Category {
   id: string
@@ -98,12 +102,18 @@ export interface WishlistItem {
 export interface Order {
   id: string
   userId: string
-  items: CartItem[]
-  total: number
-  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled"
-  paymentStatus: "pending" | "paid" | "failed" | "refunded"
+  items: OrderItem[]
   shippingAddress: Address
-  billingAddress: Address
+  billingAddress?: Address
+  paymentMethod: string
+  paymentStatus: "pending" | "paid" | "failed" | "refunded"
+  orderStatus: "pending" | "processing" | "shipped" | "delivered" | "cancelled"
+  subtotal: number
+  tax: number
+  shipping: number
+  total: number
+  shippingTrackingId?: string  // Add this line
+  estimatedDelivery?: Date
   createdAt: Date
   updatedAt: Date
 }
@@ -134,14 +144,16 @@ export interface Coupon {
   code: string
   type: "percentage" | "fixed"
   value: number
-  minOrderValue: number
-  maxDiscount?: number
+  minOrderAmount: number        // Changed from 'minOrderValue'
+  maxDiscountAmount?: number    // Changed from 'maxDiscount'
   usageLimit: number
   usedCount: number
   isActive: boolean
-  validFrom: Date
-  validTo: Date
+  expiryDate?: Date            // Changed from 'validFrom' and 'validTo'
+  createdAt: Date
+  updatedAt: Date
 }
+
 
 export interface BlogPost {
   id: string
@@ -163,17 +175,17 @@ export interface CorporateInquiry {
   id: string
   companyName: string
   contactPerson: string
-  email: string
-  phone: string
-  industry: string
-  companySize: string
-  requirements: string
-  budget: string
-  timeline: string
+  contactEmail: string      // Changed from 'email'
+  contactPhone: string      // Changed from 'phone'
+  inquiryDetails: string    // Changed from 'requirements'
+  estimatedBudget: string   // Changed from 'budget'
+  requiredProducts: string  // Added
   status: "pending" | "contacted" | "quoted" | "closed"
-  createdAt: Date
-  updatedAt: Date
+  createdAt: Date | any     // Allow FieldValue for serverTimestamp
+  updatedAt: Date | any     // Allow FieldValue for serverTimestamp
+  specialPricing?: string   // Added optional field
 }
+
 
 export interface PartnershipApplication {
   id: string
@@ -191,4 +203,41 @@ export interface PartnershipApplication {
   status: "pending" | "under_review" | "approved" | "rejected"
   createdAt: Date
   updatedAt: Date
+}
+export interface Question {
+  id: string
+  productId: string
+  userId: string
+  userName: string
+  userEmail?: string
+  question: string
+  isAnswered: boolean
+  answersCount: number
+  isVerifiedPurchase: boolean
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface Answer {
+  id: string
+  questionId: string
+  productId: string
+  userId: string
+  userName: string
+  userEmail?: string
+  answer: string
+  isVerifiedPurchase: boolean
+  isHelpful: boolean
+  helpfulCount: number
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface TrackingEvent {
+  id: string
+  status: string
+  location: string
+  timestamp: Date
+  description: string
+  isCurrentStatus?: boolean
 }

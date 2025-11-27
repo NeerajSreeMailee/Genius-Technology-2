@@ -43,7 +43,7 @@ export async function uploadImage(
   }
 }
 
-export async function deleteImage(imageUrl: string): Promise<{ success: boolean; error?: string }> {
+export async function deleteImage(imageUrl: string): Promise<{ success: boolean; error?: string; message?: string }> {
   // Vercel Blob does not expose a direct delete function via a simple API call from server actions
   // You would typically manage deletions via the Vercel Blob API or dashboard.
   // For a full implementation, you'd need to use the @vercel/blob client library on the server.

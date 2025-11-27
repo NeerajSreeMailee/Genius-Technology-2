@@ -1,5 +1,5 @@
 "use client"
-import { useActionState } from "react"
+import { useFormState } from "react-dom"  // Changed from react
 import { submitAnswer } from "@/actions/qa"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
 import { useAuth } from "@/contexts/auth-context"
 import { useRouter } from "next/navigation"
+import { useState } from "react"  // Added
 
 interface ProductAnswerFormProps {
   productId: string
@@ -19,7 +20,8 @@ export function ProductAnswerForm({ productId, questionId, onAnswerSubmitted, on
   const { user, loading } = useAuth()
   const router = useRouter()
   const { toast } = useToast()
-  const [state, formAction, isPending] = useActionState(submitAnswer.bind(null, productId, questionId), null)
+  const [isPending, setIsPending] = useState(false)  // Added manual pending state
+  const [state, formAction] = useFormState(submitAnswer.bind(null, productId, questionId), null)  // Removed isPending from destructure
 
   const handleSubmit = async (formData: FormData) => {
     if (!user && !loading) {
@@ -32,7 +34,10 @@ export function ProductAnswerForm({ productId, questionId, onAnswerSubmitted, on
       return
     }
 
+    setIsPending(true)
     const result = await formAction(formData)
+    setIsPending(false)
+    
     if (result?.success) {
       toast({
         title: "Success",
