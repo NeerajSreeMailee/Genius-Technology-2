@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Header } from "@/components/header"
+import { Header } from "@/components/layout/header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,7 +13,7 @@ import Link from "next/link"
 import { toast } from "sonner"
 import { useCart } from "@/contexts/cart-context"
 import type { Product } from "@/types"
-import { Footer } from "@/components/footer"
+import { Footer } from "@/components/layout/footer"
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, getTotalItems, getTotalPrice, appliedCoupon, applyCoupon, removeCoupon } = useCart()

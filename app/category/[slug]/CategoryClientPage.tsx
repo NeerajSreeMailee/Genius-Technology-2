@@ -1,20 +1,20 @@
 "use client"
 
 import type { Product } from "@/types"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { Breadcrumb } from "@/components/breadcrumb"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
+import { Breadcrumb } from "@/components/layout/breadcrumb"
 import { ProductCard } from "@/components/product-card"
 import { Input } from "@/components/ui/input"
 import { Search, ListFilter, Grid3X3, List, X } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import { ProductFilters } from "@/components/product-filters"
+import { ProductFilters } from "@/components/product/filters/product-filters"
 import { Card } from "@/components/ui/card"
 import { useMemo, useState, useEffect } from "react"
 import { collection, query, where, getDocs, orderBy } from "firebase/firestore"
 import { db } from "@/lib/firebase"
-import { BackgroundPatterns } from "@/components/background-patterns"
+import { BackgroundPatterns } from "@/components/shared/background-patterns"
 
 interface CategoryPageProps {
   params: {
