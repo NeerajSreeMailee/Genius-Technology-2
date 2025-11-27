@@ -1,14 +1,14 @@
 "use client"
 import { useState } from "react"
 import Link from "next/link"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
 import { ChevronLeft, ChevronRight, Heart, ShoppingCart } from "lucide-react"
 import { useCart } from "@/contexts/cart-context"
 import { useWishlist } from "@/contexts/wishlist-context"
 import useMobileCollection from "@/lib/firebase-hooks"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 
 interface MobilePageProps {
   mobileId: string

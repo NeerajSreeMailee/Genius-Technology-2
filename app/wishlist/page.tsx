@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Trash2, ShoppingCart, Heart } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 
 export default function WishlistPage() {
   const { items: wishlistItems, removeItem } = useWishlist()

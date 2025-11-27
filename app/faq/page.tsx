@@ -2,14 +2,14 @@
 
 import Link from "next/link"
 import { useState } from "react"
-import { Header } from "@/components/header"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Search, Mail, Phone, MessageCircle, ChevronDown } from "lucide-react"
-import { BackgroundPatterns } from "@/components/background-patterns"
-import { Footer } from "@/components/footer"
+import { BackgroundPatterns } from "@/components/shared/background-patterns"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 
 const faqData = [
   {

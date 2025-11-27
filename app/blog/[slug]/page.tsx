@@ -1,12 +1,13 @@
-import { Header } from "@/components/header"
 import { getBlogPostBySlug } from "@/actions/blog"
 import { notFound } from "next/navigation"
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { format } from "date-fns"
-import { Breadcrumb } from "@/components/breadcrumb"
+import { Breadcrumb } from "@/components/layout/breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import Markdown from "react-markdown" // For rendering markdown content
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 
 interface BlogPostPageProps {
   params: {

@@ -1,8 +1,5 @@
 "use client"
-import { BackgroundPatterns } from "@/components/background-patterns"
 import React, { useState, useEffect } from "react"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -16,11 +13,14 @@ import Category2 from '../../public/Category2.png'
 import Category3 from '../../public/Category3.png'
 import Category4 from '../../public/Category4.png'
 import Corporate from '../../public/Corporate.png'
-import { ShopByBrand } from "../../components/shop-by-brand"
-import { ShopByCategory } from "../../components/shop-by-category"
+import { ShopByBrand } from "@/components/home/shop-by-brand"
+import { ShopByCategory } from "@/components/home/shop-by-category"
 
 // ProductCardDesign must accept imageSrc, category, price, soldPercent.
-import { ProductCardDesign } from "../../components/product-card-design"
+import { ProductCardDesign } from "@/components/product/product-card-design"
+import { BackgroundPatterns } from "@/components/shared/background-patterns"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 
 export default function CorporatePage() {
   // Quotation submission hook

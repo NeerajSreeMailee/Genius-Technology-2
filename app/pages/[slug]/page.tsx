@@ -1,15 +1,20 @@
 import { doc, getDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
-import type { StaticPage } from "@/types"
 import { notFound } from "next/navigation"
-import { Header } from "@/components/header"
-import { Breadcrumb } from "@/components/breadcrumb"
-import { Footer } from "@/components/footer"
+import { Breadcrumb } from "@/components/layout/breadcrumb"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 
 interface StaticPageProps {
   params: {
     slug: string
   }
+}
+
+interface StaticPageData {
+  title: string;
+  content: string;
+  slug: string;
 }
 
 export async function generateMetadata({ params }: StaticPageProps) {
@@ -23,7 +28,7 @@ export async function generateMetadata({ params }: StaticPageProps) {
     }
   }
 
-  const pageData = pageSnap.data() as StaticPage
+  const pageData = pageSnap.data() as StaticPageData
   return {
     title: pageData.title,
     description: pageData.content.substring(0, 160), // Use first 160 chars of content as description
@@ -38,11 +43,11 @@ export default async function Page({ params }: StaticPageProps) {
     notFound()
   }
 
-  const pageData = pageSnap.data() as StaticPage
+  const pageData = pageSnap.data() as StaticPageData
 
   const breadcrumbs = [
-    { name: "Home", href: "/" },
-    { name: pageData.title, href: `/pages/${pageData.slug}` },
+    { label: "Home", href: "/" },
+    { label: pageData.title, href: `/pages/${params.slug}` },
   ]
 
   return (

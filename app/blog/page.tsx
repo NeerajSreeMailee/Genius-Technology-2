@@ -1,12 +1,12 @@
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { getBlogPosts } from "@/actions/blog"
 import Link from "next/link"
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { format } from "date-fns"
-import { Breadcrumb } from "@/components/breadcrumb"
+import { Breadcrumb } from "@/components/layout/breadcrumb"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 
 export const metadata = {
   title: "Blog - Genius Technology",

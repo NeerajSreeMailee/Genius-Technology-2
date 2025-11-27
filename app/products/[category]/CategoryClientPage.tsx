@@ -1,17 +1,17 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Breadcrumb } from "@/components/breadcrumb"
-import { ProductCard } from "@/components/product-card"
+import { ProductCard } from "@/components/product/product-card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Search, Filter } from "lucide-react"
 import { useMobileCollectionByCategory, useAllMobileCollectionItems } from "@/lib/firebase-hooks"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { BackgroundPatterns } from "@/components/background-patterns"
+import { BackgroundPatterns } from "@/components/shared/background-patterns"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
+import { Breadcrumb } from "@/components/layout/breadcrumb"
 
 interface CategoryClientPageProps {
   params: {

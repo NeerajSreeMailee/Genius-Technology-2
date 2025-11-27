@@ -1,9 +1,9 @@
 import Link from "next/link"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Scale, ShoppingCart, CreditCard, Truck, RotateCcw } from "lucide-react"
-import { BackgroundPatterns } from "@/components/background-patterns"
+import { BackgroundPatterns } from "@/components/shared/background-patterns"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 
 export default function TermsOfServicePage() {
   const sections = [

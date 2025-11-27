@@ -4,14 +4,14 @@ import type React from "react"
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { ProductCardDesign } from "./product-card-design"
-import Category1 from '../public/Category1.png'
-import Category2 from '../public/Category2.png'
-import Category3 from '../public/Category3.png'
-import Category4 from '../public/Category4.png'
+import { ProductCardDesign } from "../product/cards/product-card-design"
+import Category1 from '../../../public/Category1.png'
+import Category2 from '../../../public/Category2.png'
+import Category3 from '../../../public/Category3.png'
+import Category4 from '../../../public/Category4.png'
 import { StaticImageData } from "next/image"
 import { Cat } from "lucide-react"
-import { BackgroundPatterns } from "@/components/background-patterns"
+import { BackgroundPatterns } from "@/components/shared/background-patterns"
 
 interface Category {
   id: string

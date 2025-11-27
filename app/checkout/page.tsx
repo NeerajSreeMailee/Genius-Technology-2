@@ -8,7 +8,7 @@ import { useCart } from "@/contexts/cart-context"
 import { collection, addDoc, doc, getDoc, updateDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import type { Product, Address } from "@/types"
-import { Header } from "@/components/header"
+import { Header } from "@/components/layout/header"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -23,7 +23,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Badge } from "@/components/ui/badge"
 import { sendOrderConfirmationNotification } from "@/actions/notifications"
 import { applyCoupon as applyCouponAction, incrementCouponUsage } from "@/actions/coupons"
-import { Footer } from "@/components/footer"
+import { Footer } from "@/components/layout/footer"
 
 // Declare global types for payment SDKs if they are loaded dynamically
 declare global {

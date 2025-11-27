@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Header } from "@/components/header"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -11,8 +10,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Phone, Mail, MessageCircle, User } from "lucide-react"
 import { toast } from "sonner"
 import { useContactSubmission } from "@/lib/firebase-hooks"
-import { BackgroundPatterns } from "@/components/background-patterns"
-import { Footer } from "@/components/footer"
+import { BackgroundPatterns } from "@/components/shared/background-patterns"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 
 
 export default function ContactPage() {

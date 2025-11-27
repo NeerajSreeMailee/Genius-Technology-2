@@ -1,11 +1,11 @@
 import Link from "next/link"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { RotateCcw, Clock, CheckCircle, XCircle, Package, CreditCard, Phone, Mail } from "lucide-react"
-import { BackgroundPatterns } from "@/components/background-patterns"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
+import { BackgroundPatterns } from "@/components/shared/background-patterns"
 
 export default function ReturnsPage() {
   const returnProcess = [

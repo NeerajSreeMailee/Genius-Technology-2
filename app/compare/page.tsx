@@ -1,8 +1,8 @@
 "use client"
 
-import { Header } from "@/components/header"
-import { Breadcrumb } from "@/components/breadcrumb"
-import { ProductComparisonTable } from "@/components/product-comparison-table"
+import { Header } from "@/components/layout/header"
+import { Breadcrumb } from "@/components/layout/breadcrumb"
+import { ProductComparisonTable } from "@/components/product/product-comparison-table"
 import { useComparison } from "@/contexts/comparison-context"
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
@@ -10,7 +10,7 @@ import { doc, getDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import type { Product } from "@/types"
 import Link from "next/link"
-import { Footer } from "@/components/footer"
+import { Footer } from "@/components/layout/footer"
 
 export default function ComparePage() {
   const { comparisonProductIds, clearComparison, setComparisonProducts, comparisonProducts } = useComparison()

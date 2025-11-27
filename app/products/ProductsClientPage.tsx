@@ -2,21 +2,21 @@
 
 import { useState, useEffect, useMemo } from "react"
 import { useAllMobileCollectionItems } from "@/lib/firebase-hooks"
-import { ProductCard } from "@/components/product-card"
-import { ProductFilters } from "@/components/product-filters"
+import { ProductCard } from "@/components/product/product-card"
+import { ProductFilters } from "@/components/product/filters/product-filters"
 import { Input } from "@/components/ui/input"
 import { Search } from "lucide-react"
 import type { Product, Category } from "@/types" // Import Category
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { Breadcrumb } from "@/components/breadcrumb"
 import { Button } from "@/components/ui/button"
 import { ListFilter, Grid3X3, List } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Card } from "@/components/ui/card"
 import { X } from "lucide-react" // Import X for mobile filter panel
 import { Skeleton } from "@/components/ui/skeleton" // Import Skeleton for loading states
-import { BackgroundPatterns } from "@/components/background-patterns"
+import { BackgroundPatterns } from "@/components/shared/background-patterns"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
+import { Breadcrumb } from "@/components/layout/breadcrumb"
 
 export default function ProductsClientPage() {
   const { mobiles: allProducts, loading, error } = useAllMobileCollectionItems()

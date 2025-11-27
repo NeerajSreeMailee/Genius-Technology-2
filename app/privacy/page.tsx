@@ -1,9 +1,9 @@
 import Link from "next/link"
-import { Header } from "@/components/header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Shield, Lock, Eye, UserCheck, Database, Globe } from "lucide-react"
-import { BackgroundPatterns } from "@/components/background-patterns"
-import { Footer } from "@/components/footer"
+import { BackgroundPatterns } from "@/components/shared/background-patterns"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 
 export default function PrivacyPolicyPage() {
   const sections = [

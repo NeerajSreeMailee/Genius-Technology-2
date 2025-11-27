@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useBrands } from "@/lib/firebase-hooks"
-import { BackgroundPatterns } from "@/components/background-patterns"
+import { BackgroundPatterns } from "@/components/shared/background-patterns"
 
 export function ShopByBrand() {
   const { brands = [], loading } = useBrands()

@@ -1,22 +1,22 @@
 "use client"
 
 import type React from "react"
-import { BackgroundPatterns } from "@/components/background-patterns"
 
 import { useState, useEffect } from "react"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useJoinUsSubmission } from "@/lib/firebase-hooks"
-import { OfferBanner } from "@/components/offer-banner"
-import { FeaturedProducts } from "@/components/featured-products"
-import { TrendingDeals } from "@/components/trending-deals"
+import { OfferBanner } from "@/components/home/offer-banner"
+import { FeaturedProducts } from "@/components/home/featured-products"
+import { TrendingDeals } from "@/components/home/trending-deals"
 import BrandPage from "../brand/[slug]/page"
-import { ShopByBrand } from "@/components/shop-by-brand"
+import { ShopByBrand } from "@/components/home/shop-by-brand"
+import { BackgroundPatterns } from "@/components/shared/background-patterns"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 
 export default function JoinPage() {
   // Join us submission hook

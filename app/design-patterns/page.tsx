@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
-import { Header } from "@/components/header"
-import { BackgroundPatterns } from "@/components/background-patterns"
-import { Footer } from "@/components/footer"
+import { BackgroundPatterns } from "@/components/shared/background-patterns"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 
 export const metadata: Metadata = {
   title: "Design Patterns Showcase",

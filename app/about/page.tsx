@@ -1,6 +1,6 @@
-import { BackgroundPatterns } from "@/components/background-patterns";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
+import { BackgroundPatterns } from "@/components/shared/background-patterns";
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
 import { Card } from "@/components/ui/card";
 import { UserRound, Linkedin } from "lucide-react";
 import profile from "../../public/profile.png";

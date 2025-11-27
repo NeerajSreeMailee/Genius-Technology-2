@@ -7,7 +7,6 @@ import { useToast } from "@/hooks/use-toast"
 import { doc, updateDoc, collection, query, getDocs, addDoc, deleteDoc, where, orderBy } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import type { Address, PaymentMethod, WishlistItem, User as AuthUser } from "@/types"
-import { Header } from "@/components/header"
 import { AccountSidebar } from "@/components/account/account-sidebar"
 import { User, MapPin, Heart, Plus, Edit, Trash, CheckCircle, CreditCard, Bell, Shield, Gift, Package, Search, Truck, XCircle, FileText, LocateFixed, ExternalLink, Eye } from "lucide-react"
 import { Label } from "@/components/ui/label"
@@ -22,7 +21,8 @@ import { Separator } from "@/components/ui/separator"
 import { PaymentMethodForm } from "@/components/account/payment-method-form"
 import Image from "next/image"
 import Link from "next/link"
-import { Footer } from "@/components/footer"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 
 // A basic placeholder for a Wishlist Product Card component
 const WishlistProductCard = ({ item, onDelete }: { item: WishlistItem; onDelete: (id: string) => void }) => (
