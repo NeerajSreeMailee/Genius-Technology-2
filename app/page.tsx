@@ -1,28 +1,53 @@
-import { OfferBanner } from "@/components/offer-banner"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
+import { Suspense } from "react"
+import dynamic from 'next/dynamic'
+
+// Static imports for above-the-fold content
 import { HeroSection } from "@/components/hero-section"
-import { TrendingDeals } from "@/components/trending-deals"
-import { ShopByBrand } from "@/components/shop-by-brand"
-import { ShopByCategory } from "@/components/shop-by-category"
-import { FeaturedProducts } from "@/components/featured-products"
-import { CustomerTestimonials } from "@/components/customer-testimonials"
-import { NewsletterSection } from "@/components/newsletter-section"
+
+// Dynamic imports for below-the-fold content
+const TrendingDeals = dynamic(() => import("@/components/trending-deals"), {
+  loading: () => <div className="h-96 animate-pulse bg-gray-100" />
+})
+
+const ShopByBrand = dynamic(() => import("@/components/shop-by-brand"), {
+  loading: () => <div className="h-64 animate-pulse bg-gray-100" />
+})
+
+const ShopByCategory = dynamic(() => import("@/components/shop-by-category"), {
+  loading: () => <div className="h-64 animate-pulse bg-gray-100" />
+})
+
+const CustomerTestimonials = dynamic(() => import("@/components/customer-testimonials"), {
+  loading: () => <div className="h-96 animate-pulse bg-gray-100" />
+})
+
+// Loading skeletons for each component
+function HeroSectionSkeleton() {
+  return (
+    <div className="h-[685px] bg-gray-200 animate-pulse mt-[50px]" />
+  )
+}
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-white">
-      <OfferBanner />
-      <Header />
-      <main>
-        <HeroSection />
+    <>
+      <HeroSection />
+      
+      <Suspense fallback={<div className="h-96 animate-pulse bg-gray-100" />}>
         <TrendingDeals />
+      </Suspense>
+      
+      <Suspense fallback={<div className="h-64 animate-pulse bg-gray-100" />}>
         <ShopByBrand />
+      </Suspense>
+      
+      <Suspense fallback={<div className="h-64 animate-pulse bg-gray-100" />}>
         <ShopByCategory />
+      </Suspense>
+      
+      <Suspense fallback={<div className="h-96 animate-pulse bg-gray-100" />}>
         <CustomerTestimonials />
-        {/* <NewsletterSection /> */}
-      </main>
-      <Footer />
-    </div>
+      </Suspense>
+    </>
   )
 }

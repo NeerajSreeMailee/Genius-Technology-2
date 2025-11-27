@@ -3,11 +3,22 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { LayoutClient } from "@/components/layout-client"
+import { Suspense } from 'react'
+import { SkipLink } from '@/components/shared/skip-link'
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ 
+  subsets: ["latin"],
+  variable: '--font-inter',
+  display: 'swap', // Important for performance
+  preload: true,
+  fallback: ['system-ui', 'arial'],
+})
 
 export const metadata: Metadata = {
-  title: "Genius Technology - Premium Mobile Accessories",
+  title: {
+    template: "%s | Genius Technology - Premium Mobile Accessories",
+    default: "Genius Technology - Premium Mobile Accessories"
+  },
   description:
     "Discover premium mobile accessories, audio devices, charging solutions, and smart gadgets. Quality products with fast delivery across India.",
   keywords: "mobile accessories, headphones, chargers, power banks, phone cases, wireless speakers",
@@ -58,9 +69,14 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "your-google-verification-code",
+    google: process.env.GOOGLE_VERIFICATION_CODE || "your-google-verification-code",
   },
-    generator: 'v0.dev'
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-16x16.png",
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/site.webmanifest",
 }
 
 export default function RootLayout({
@@ -69,9 +85,33 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <LayoutClient>{children}</LayoutClient>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Genius Technology",
+              "url": "https://geniustechnology.in",
+              "logo": "https://geniustechnology.in/logo.png",
+              "sameAs": [
+                "https://www.facebook.com/geniustechnology",
+                "https://twitter.com/geniustechnology",
+                "https://www.instagram.com/geniustechnology",
+                "https://www.linkedin.com/company/geniustechnology"
+              ]
+            })
+          }}
+        />
+      </head>
+      <body className={`${inter.variable} font-sans antialiased`}>
+        <SkipLink />
+        <Suspense fallback={<div className="min-h-screen bg-white" />}>
+          <LayoutClient>{children}</LayoutClient>
+        </Suspense>
       </body>
     </html>
   )

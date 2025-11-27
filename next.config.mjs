@@ -1,38 +1,46 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false, // Enforce ESLint checks during builds
   },
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false, // Enforce TypeScript checks during builds
   },
   images: {
     unoptimized: false,
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    formats: ['image/avif', 'image/webp'],
-    minimumCacheTTL: 86400, // 24 hours
-    dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    domains: ['localhost'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256],
+    formats: ['image/webp'], // Remove AVIF for faster processing
+    minimumCacheTTL: 31536000, // 1 year cache
+    dangerouslyAllowSVG: false, // Security improvement
+    
+    // Whitelist only necessary domains
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: 'firebasestorage.googleapis.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      // Add other specific domains as needed
     ],
-    // Aggressive optimization
+    
+    // Optimize loading
     loader: 'default',
   },
-  // Enable React strict mode for better performance
-  reactStrictMode: true,
+  // Enable React strict mode for development only
+  reactStrictMode: process.env.NODE_ENV === 'development',
   // Enable compression for better performance
   compress: true,
   // Optimize fonts for better performance
   experimental: {
-    optimizeCss: true,
-    webVitalsAttribution: ['FCP', 'LCP', 'CLS', 'FID', 'TTFB'],
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
+    // Add this:
+    turbotrace: {
+      logLevel: 'error'
+    }
   },
   // Configure webpack for better performance
   webpack: (config, { dev, isServer }) => {
@@ -49,8 +57,8 @@ const nextConfig = {
     
     // Optimize for faster builds
     if (!dev) {
-      // Reduce info logging
-      config.stats = 'errors-only';
+      // Show more detailed build information
+      config.stats = 'normal';
       
       // Optimize build performance
       config.optimization = {
@@ -60,6 +68,9 @@ const nextConfig = {
         mergeDuplicateChunks: true,
         flagIncludedChunks: true,
         sideEffects: true,
+        // Enable more aggressive optimizations
+        usedExports: true,
+        concatenateModules: true,
       };
     }
     

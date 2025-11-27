@@ -11,6 +11,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Star, Heart, ShoppingCart, Eye, GitCompare } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { OptimizedImage } from "@/components/optimized-image"
 
 interface ProductCardProps {
   product: Product
@@ -108,11 +109,14 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
         <CardContent className="p-4">
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
             <div className="relative w-full sm:w-32 h-48 sm:h-32 flex-shrink-0">
-              <Image
+              <OptimizedImage
                 src={productImage}
                 alt={product?.name || "Product"}
-                fill
                 className="object-contain rounded-lg"
+                width={128}
+                height={128}
+                quality={80}
+                loading="lazy"
               />
               {discount > 0 && (
                 <Badge className="absolute top-2 right-2 bg-red-600">-{discount}%</Badge>
@@ -201,12 +205,14 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
       
       <CardContent className="p-4 relative z-10">
         <div className="relative mb-4">
-          <Image
+          <OptimizedImage
             src={productImage}
             alt={product?.name || "Product"}
+            className="w-full h-48 object-contain rounded-lg"
             width={250}
             height={250}
-            className="w-full h-48 object-contain rounded-lg"
+            quality={80}
+            loading="lazy"
           />
 
           {product.isFeatured && (

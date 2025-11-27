@@ -12,6 +12,9 @@ const config: Config = {
   ],
 	theme: {
 		extend: {
+      fontFamily: {
+        sans: ['var(--font-inter)', 'system-ui', 'arial', 'sans-serif'],
+      },
 			colors: {
 				// Custom brand colors
 				primary: '#FFCC01',
