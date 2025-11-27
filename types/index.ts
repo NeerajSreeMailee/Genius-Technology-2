@@ -147,16 +147,17 @@ export interface BlogPost {
   id: string
   title: string
   slug: string
-  excerpt: string
   content: string
-  featuredImage: string
-  author: string
+  authorId: string      // Changed from 'author'
+  authorName: string    // Added
+  imageUrl?: string     // Changed from 'featuredImage', made optional
   tags: string[]
   isPublished: boolean
   publishedAt?: Date
   createdAt: Date
   updatedAt: Date
 }
+
 
 export interface CorporateInquiry {
   id: string

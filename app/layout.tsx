@@ -2,7 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import { LayoutClient } from "@/components/layout-client"
+import { LayoutClient } from "@/components/shared/layout-client"
 import { Suspense } from 'react'
 import { SkipLink } from '@/components/shared/skip-link'
 

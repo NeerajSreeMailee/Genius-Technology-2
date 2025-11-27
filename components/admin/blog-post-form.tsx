@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/hooks/use-toast"
-import { useActionState } from "react"
+import { useFormState } from "react-dom"
 import { createBlogPost, updateBlogPost } from "@/actions/blog"
 import Image from "next/image"
 import { XCircle } from "lucide-react"
@@ -29,7 +29,7 @@ export function BlogPostForm({ post, onSuccess, onCancel, authorId, authorName }
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [removeExistingImage, setRemoveExistingImage] = useState(false)
 
-  const [state, formAction] = useActionState(async (prevState: any, formData: FormData) => {
+  const [state, formAction] = useFormState(async (prevState: any, formData: FormData) => {
     setIsSaving(true)
     let result
     if (post) {

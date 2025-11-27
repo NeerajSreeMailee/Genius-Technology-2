@@ -1,5 +1,5 @@
 "use client"
-import { useActionState } from "react"
+import { useFormState } from "react-dom"
 import { submitQuestion } from "@/actions/qa"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -18,7 +18,7 @@ export function ProductQuestionForm({ productId, onQuestionSubmitted, onClose }:
   const { user, loading } = useAuth()
   const router = useRouter()
   const { toast } = useToast()
-  const [state, formAction, isPending] = useActionState(submitQuestion.bind(null, productId), null)
+  const [state, formAction, isPending] = useFormState(submitQuestion.bind(null, productId), null)
 
   const handleSubmit = async (formData: FormData) => {
     if (!user && !loading) {
