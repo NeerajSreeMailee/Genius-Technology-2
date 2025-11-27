@@ -4,10 +4,10 @@ import { useState, useEffect, useRef } from "react"
 import { useAuth } from "@/contexts/auth-context"
 import { doc, getDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
-import { Header } from "@/components/header"
+import { Header } from "@/components/layout/header"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Footer } from "@/components/footer"
+import { Footer } from "@/components/layout/footer"
 
 import { 
   Printer, 
