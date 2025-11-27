@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
 import { doc, getDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
-import { Header } from "@/components/header"
+import { Header } from "@/components/layout/header"
 import { AccountSidebar } from "@/components/account/account-sidebar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -12,7 +12,7 @@ import { Package, Truck, CheckCircle, XCircle, Clock, MapPin } from "lucide-reac
 import { getTrackingDetails } from "@/actions/shipping"
 import type { Order, TrackingEvent } from "@/types"
 import Link from "next/link"
-import { Footer } from "@/components/footer"
+import { Footer } from "@/components/layout/footer"
 
 export default function OrderTrackingPage() {
   const params = useParams()
