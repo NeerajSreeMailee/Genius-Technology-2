@@ -1,6 +1,6 @@
 "use client"
 
-import { Header } from "@/components/header"
+import { Header } from "@/components/layout/header"
 import { useAuth } from "@/contexts/auth-context"
 import { useWishlist } from "@/contexts/wishlist-context"
 import { ProductCard } from "@/components/product-card"
@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Heart, Loader2 } from "lucide-react"
 import Link from "next/link"
-import { Footer } from "@/components/footer"
+import { Footer } from "@/components/layout/footer"
 import Image from "next/image"
 
 export default function WishlistPage() {

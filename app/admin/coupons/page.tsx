@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 import { AdminSidebar } from "@/components/admin/admin-sidebar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"

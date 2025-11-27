@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useAuth } from "@/contexts/auth-context"
 import { collection, query, where, getDocs, orderBy } from "firebase/firestore"
 import { db } from "@/lib/firebase"
-import { Header } from "@/components/header"
+import { Header } from "@/components/layout/header"
 import { AccountSidebar } from "@/components/account/account-sidebar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Package, Search, Truck, CheckCircle, XCircle, MapPin } from "lucide-react" // Removed FileText and Receipt imports
 import Link from "next/link"
 import Image from "next/image"
-import { Footer } from "@/components/footer"
+import { Footer } from "@/components/layout/footer"
 
 export default function OrdersPage() {
   const { user } = useAuth()
