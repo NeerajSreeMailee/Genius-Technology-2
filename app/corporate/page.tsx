@@ -8,16 +8,11 @@ import { toast } from "@/components/ui/use-toast"
 import { useQuotationSubmission } from "@/lib/firebase-hooks"
 import { DollarSign, Package, Phone, Truck } from "lucide-react"
 import { StaticImageData } from "next/image"
-import Category1 from '../../public/Category1.png'
-import Category2 from '../../public/Category2.png'
-import Category3 from '../../public/Category3.png'
-import Category4 from '../../public/Category4.png'
-import Corporate from '../../public/Corporate.png'
 import { ShopByBrand } from "@/components/home/shop-by-brand"
 import { ShopByCategory } from "@/components/home/shop-by-category"
 
 // ProductCardDesign must accept imageSrc, category, price, soldPercent.
-import { ProductCardDesign } from "@/components/product/product-card-design"
+import { ProductCardDesign } from "@/components/product/cards/product-card-design"
 import { BackgroundPatterns } from "@/components/shared/background-patterns"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
@@ -43,28 +38,28 @@ export default function CorporatePage() {
     {
       id: "1",
       name: "Laptops",
-      image: Category1,
+      image: '/Category1.png',
       startingPrice: 59999,
       productCount: 75,
     },
     {
       id: "2",
       name: "Smart Phone",
-      image: Category2,
+      image: '/Category2.png',
       startingPrice: 9999,
       productCount: 75,
     },
     {
       id: "3",
       name: "Smart Tv",
-      image: Category3,
+      image: '/Category3.png',
       startingPrice: 35999,
       productCount: 75,
     },
     {
       id: "4",
       name: "Tablet",
-      image: Category4,
+      image: '/Category4.png',
       startingPrice: 59999,
       productCount: 75,
     },

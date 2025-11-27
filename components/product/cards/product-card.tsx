@@ -11,7 +11,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Star, Heart, ShoppingCart, Eye, GitCompare } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-import { OptimizedImage } from "@/components/optimized-image"
+import { OptimizedImage } from "@/components/shared/optimized-image"
 
 interface ProductCardProps {
   product: Product

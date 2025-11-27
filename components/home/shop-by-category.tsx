@@ -5,10 +5,6 @@ import type React from "react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { ProductCardDesign } from "../product/cards/product-card-design"
-import Category1 from '../../../public/Category1.png'
-import Category2 from '../../../public/Category2.png'
-import Category3 from '../../../public/Category3.png'
-import Category4 from '../../../public/Category4.png'
 import { StaticImageData } from "next/image"
 import { Cat } from "lucide-react"
 import { BackgroundPatterns } from "@/components/shared/background-patterns"
@@ -31,7 +27,7 @@ export function ShopByCategory() {
       id: "1",
       name: "Display",
       slug: "display",
-      image: Category1,
+      image: '/Category1.png',
       productCount: 28,
       startingPrice: 999,
       gradient: "from-blue-500 to-blue-600",
@@ -41,7 +37,7 @@ export function ShopByCategory() {
       id: "2",
       name: "Battery",
       slug: "battery",
-      image: Category2,
+      image: '/Category2.png',
       productCount: 13,
       startingPrice: 299,
       gradient: "from-green-500 to-green-600",

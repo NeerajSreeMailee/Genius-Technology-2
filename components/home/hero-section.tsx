@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import slide1 from '../public/Hero.png'
+
 
 export function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -16,7 +16,7 @@ export function HeroSection() {
       id: 1,
       title: "Power Meets Price Unmissable Laptop Deals",
       subtitle: "Upgrade your tech game with top-rated laptops at unbeatable prices. From sleek ultrabooks to powerhouse machines, these limited-time deals are built to impress—and disappear fast.",
-      image: slide1,
+      image: '/Hero.png',
       cta: "Shop Laptops Now",
       link: "/category/iphone-accessories",
       position: "left",

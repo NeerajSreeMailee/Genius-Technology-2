@@ -8,8 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { useCart } from "@/contexts/cart-context"
 import { useWishlist } from "@/contexts/wishlist-context"
-import Product1 from '../public/Product1.png'
-import Product2 from '../public/Product2.png'
+
 
 import type { StaticImageData } from "next/image"
 
@@ -37,7 +36,7 @@ export function FeaturedProducts() {
       id: "1",
       name: "Wireless Bluetooth Headphones",
       brand: "SoundMax",
-      image: Product1,
+      image: '/Product1.png',
       originalPrice: 2999,
       salePrice: 1499,
       discount: 50,
@@ -51,7 +50,7 @@ export function FeaturedProducts() {
       id: "2",
       name: "Fast Charging Power Bank 20000mAh",
       brand: "PowerPro",
-      image: Product2,
+      image: '/Product2.png',
       originalPrice: 3499,
       salePrice: 1999,
       discount: 43,
@@ -65,7 +64,7 @@ export function FeaturedProducts() {
       id: "3",
       name: "Wireless Car Charger Mount",
       brand: "AutoTech",
-      image: Product1,
+      image: '/Product1.png',
       originalPrice: 1999,
       salePrice: 999,
       discount: 50,

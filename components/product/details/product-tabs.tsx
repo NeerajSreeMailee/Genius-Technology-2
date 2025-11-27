@@ -1,18 +1,50 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import type { Product, Review, Question, Answer } from "@/types"
+import type { Product, Review } from "@/types"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { ProductReviewForm } from "./product-review-form"
-import { ProductQuestionForm } from "./product-question-form"
-import { ProductAnswerForm } from "./product-answer-form"
+import { ProductReviewForm } from "../reviews/product-review-form"
+import { ProductQuestionForm } from "../reviews/product-question-form"
+import { ProductAnswerForm } from "../reviews/product-answer-form"
 import { collection, query, orderBy, getDocs, doc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
-import { ProductRatingSummary } from "./product-rating-summary" // New import
-import { ProductReviewItem } from "./product-review-item" // New import
+import { ProductRatingSummary } from "../reviews/product-rating-summary" // New import
+import { ProductReviewItem } from "../reviews/product-review-item" // New import
+
+interface Question {
+  id: string
+  question: string
+  userName: string
+  createdAt: Date
+  answers: Answer[]
+}
+
+interface Answer {
+  id: string
+  answer: string
+  userName: string
+  isOfficial: boolean
+  createdAt: Date
+}
+
+interface Question {
+  id: string
+  question: string
+  userName: string
+  createdAt: Date
+  answers: Answer[]
+}
+
+interface Answer {
+  id: string
+  answer: string
+  userName: string
+  isOfficial: boolean
+  createdAt: Date
+}
 
 interface ProductTabsProps {
   product: Product
@@ -110,7 +142,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
         <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="description">Description</TabsTrigger>
           <TabsTrigger value="specifications">Specifications</TabsTrigger>
-          <TabsTrigger value="reviews">Reviews ({product.reviews})</TabsTrigger>
+          <TabsTrigger value="reviews">Reviews ({product.reviewCount})</TabsTrigger>
           <TabsTrigger value="qa">Q&A ({questions.length})</TabsTrigger>
           <TabsTrigger value="warranty">Warranty</TabsTrigger>
         </TabsList>
@@ -198,7 +230,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h3 className="text-lg font-semibold">Customer Reviews</h3>
-                  <p className="text-gray-600">Based on {product.reviews} reviews</p>
+                  <p className="text-gray-600">Based on {product.reviewCount} reviews</p>
                 </div>
                 <div className="flex space-x-4">
                   <select
@@ -229,8 +261,8 @@ export function ProductTabs({ product }: ProductTabsProps) {
               </div>
 
               {/* Product Rating Summary */}
-              {product.reviews > 0 && (
-                <ProductRatingSummary averageRating={product.rating} totalReviews={product.reviews} reviews={reviews} />
+              {product.reviewCount > 0 && (
+                <ProductRatingSummary averageRating={product.rating} totalReviews={product.reviewCount} reviews={reviews} />
               )}
 
               {loadingReviews ? (
@@ -286,7 +318,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
                       </div>
                       <div className="space-y-4 mt-4">
                         {qa.answers && qa.answers.length > 0 ? (
-                          qa.answers.map((answer) => (
+                          qa.answers.map((answer: any) => (
                             <div key={answer.id} className="bg-blue-50 p-4 rounded-lg">
                               <p className="text-gray-900 mb-2">A: {answer.answer}</p>
                               <p className="text-sm text-blue-600">

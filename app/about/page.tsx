@@ -3,7 +3,6 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card } from "@/components/ui/card";
 import { UserRound, Linkedin } from "lucide-react";
-import profile from "../../public/profile.png";
 
 export default function AboutPage() {
   return (
