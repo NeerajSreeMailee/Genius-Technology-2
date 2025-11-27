@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react"
 import { useAllMobileCollectionItems } from "@/lib/firebase-hooks"
-import { ProductCard } from "@/components/product/product-card"
+import { ProductCard } from "@/components/product-card"
 import { ProductFilters } from "@/components/product/filters/product-filters"
 import { Input } from "@/components/ui/input"
 import { Search } from "lucide-react"
