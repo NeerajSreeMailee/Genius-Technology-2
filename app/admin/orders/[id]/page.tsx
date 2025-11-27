@@ -7,7 +7,7 @@ import { useParams, useRouter } from "next/navigation"
 import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore" // Import updateDoc
 import { db } from "@/lib/firebase"
 import type { Order, OrderItem, Product } from "@/types"
-import { Header } from "@/components/header"
+import { Header } from "@/components/layout/header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
