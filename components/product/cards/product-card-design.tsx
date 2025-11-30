@@ -1,5 +1,5 @@
 import Image, { StaticImageData } from "next/image";
-import React from "react";
+import React, { memo } from "react";
 
 interface ProductCardDesignProps {
   imageSrc: StaticImageData | string;
@@ -9,7 +9,7 @@ interface ProductCardDesignProps {
   onClick?: () => void;
 }
 
-export const ProductCardDesign: React.FC<ProductCardDesignProps> = ({
+export const ProductCardDesign: React.FC<ProductCardDesignProps> = memo(({
   imageSrc,
   category,
   price,
@@ -17,7 +17,7 @@ export const ProductCardDesign: React.FC<ProductCardDesignProps> = ({
   onClick,
 }) => {
   return (
-    <div 
+    <div
       className="bg-white rounded-2xl shadow-lg p-6 w-[290px] flex flex-col items-center cursor-pointer hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1"
       onClick={onClick}
     >
@@ -26,6 +26,7 @@ export const ProductCardDesign: React.FC<ProductCardDesignProps> = ({
           src={imageSrc}
           alt={category}
           fill
+          sizes="(max-width: 768px) 100vw, 290px"
           style={{ objectFit: "contain" }}
           className="rounded-lg"
         />
@@ -43,4 +44,6 @@ export const ProductCardDesign: React.FC<ProductCardDesignProps> = ({
       </div>
     </div>
   );
-};
+});
+
+ProductCardDesign.displayName = "ProductCardDesign";

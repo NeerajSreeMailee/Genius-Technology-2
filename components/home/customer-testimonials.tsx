@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, memo } from "react"
 import Image from "next/image"
 import { Star, Play, Heart, MessageCircle, ExternalLink } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
@@ -73,7 +73,7 @@ export function CustomerTestimonials() {
         <div className="flex items-start justify-between">
           {/* Section Header */}
           <div className="mb-12">
-            <h2 className="text-[36px] font-bold text-[#004AAD] mb-4">What Our<br/>Customers Say</h2>
+            <h2 className="text-[36px] font-bold text-[#004AAD] mb-4">What Our<br />Customers Say</h2>
             <p className="text-[16px] text-[#333333]-600 mb-8 max-w-[750px]">From students to tech enthusiasts, our customers love the performance, style, and value Genius Technology delivers. See how our products are making a difference in everyday lives.</p>
           </div>
 
@@ -86,80 +86,58 @@ export function CustomerTestimonials() {
             <TestimonialCard key={testimonial.id} testimonial={testimonial} />
           ))}
         </div>
-
-        {/* Customer Stats
-        <div className="bg-white rounded-2xl shadow-lg p-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-3xl font-bold text-orange-500 mb-2">50K+</div>
-              <div className="text-gray-600">Happy Customers</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-orange-500 mb-2">4.8★</div>
-              <div className="text-gray-600">Average Rating</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-orange-500 mb-2">98%</div>
-              <div className="text-gray-600">Satisfaction Rate</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-orange-500 mb-2">24/7</div>
-              <div className="text-gray-600">Customer Support</div>
-            </div>
-          </div>
-        </div> */}
       </div>
     </section>
   )
 }
 
-function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
+const TestimonialCard = memo(function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   const renderStars = (rating: number) => {
     return [...Array(5)].map((_, i) => (
       <Star key={i} size={16} className={i < rating ? "text-yellow-400 fill-current" : "text-gray-300"} />
     ))
   }
 
-    if (testimonial.type === "text") {
-      return (
-        <div className="relative bg-gradient-to-b from-[#F8FAFF] to-[#EAF3FA] rounded-3xl shadow-lg p-8 flex flex-col min-h-[400px] max-w-[400px] mx-auto overflow-hidden border border-[#E0E6EF]">
-          {/* Quote Icon */}
-          <svg
-            className="absolute top-6 right-6 w-8 h-8 text-black/70"
-            fill="none"
-            viewBox="0 0 32 32"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M12.5 8.5C12.5 6.01472 10.4853 4 8 4C5.51472 4 3.5 6.01472 3.5 8.5C3.5 10.9853 5.51472 13 8 13C8.82843 13 9.5 13.6716 9.5 14.5V20.5C9.5 21.3284 8.82843 22 8 22C7.17157 22 6.5 21.3284 6.5 20.5V16.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            <path d="M28.5 8.5C28.5 6.01472 26.4853 4 24 4C21.5147 4 19.5 6.01472 19.5 8.5C19.5 10.9853 21.5147 13 24 13C24.8284 13 25.5 13.6716 25.5 14.5V20.5C25.5 21.3284 24.8284 22 24 22C23.1716 22 22.5 21.3284 22.5 20.5V16.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          </svg>
-          {/* Customer Info */}
-          <div className="flex items-center gap-4 mb-2">
-            <Image
-              src={testimonial.customerPhoto || "/placeholder.svg"}
-              alt={testimonial.customerName}
-              width={70}
-              height={70}
-              className="rounded-full border-4 border-white shadow-md"
-            />
-            <div className="flex flex-col">
-              <span className="font-bold text-xl text-black mb-1">{testimonial.customerName}</span>
-              <div className="flex items-center">
-                {renderStars(testimonial.rating)}
-              </div>
+  if (testimonial.type === "text") {
+    return (
+      <div className="relative bg-gradient-to-b from-[#F8FAFF] to-[#EAF3FA] rounded-3xl shadow-lg p-8 flex flex-col min-h-[400px] max-w-[400px] mx-auto overflow-hidden border border-[#E0E6EF]">
+        {/* Quote Icon */}
+        <svg
+          className="absolute top-6 right-6 w-8 h-8 text-black/70"
+          fill="none"
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M12.5 8.5C12.5 6.01472 10.4853 4 8 4C5.51472 4 3.5 6.01472 3.5 8.5C3.5 10.9853 5.51472 13 8 13C8.82843 13 9.5 13.6716 9.5 14.5V20.5C9.5 21.3284 8.82843 22 8 22C7.17157 22 6.5 21.3284 6.5 20.5V16.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          <path d="M28.5 8.5C28.5 6.01472 26.4853 4 24 4C21.5147 4 19.5 6.01472 19.5 8.5C19.5 10.9853 21.5147 13 24 13C24.8284 13 25.5 13.6716 25.5 14.5V20.5C25.5 21.3284 24.8284 22 24 22C23.1716 22 22.5 21.3284 22.5 20.5V16.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+        {/* Customer Info */}
+        <div className="flex items-center gap-4 mb-2">
+          <Image
+            src={testimonial.customerPhoto || "/placeholder.svg"}
+            alt={testimonial.customerName}
+            width={70}
+            height={70}
+            className="rounded-full border-4 border-white shadow-md"
+          />
+          <div className="flex flex-col">
+            <span className="font-bold text-xl text-black mb-1">{testimonial.customerName}</span>
+            <div className="flex items-center">
+              {renderStars(testimonial.rating)}
             </div>
           </div>
-          {/* Review Content */}
-          <p className="text-[16px] text-black mb-4 leading-relaxed mt-[50px]">
-            {testimonial.content}
-          </p>
-          {/* Product Info */}
-          <div className="mt-[30px]">
-            <span className="text-[#004AAD] font-semibold">Product Purchased:</span>
-            <span className="text-black font-normal ml-1">{testimonial.productPurchased}</span>
-          </div>
         </div>
-      )
+        {/* Review Content */}
+        <p className="text-[16px] text-black mb-4 leading-relaxed mt-[50px]">
+          {testimonial.content}
+        </p>
+        {/* Product Info */}
+        <div className="mt-[30px]">
+          <span className="text-[#004AAD] font-semibold">Product Purchased:</span>
+          <span className="text-black font-normal ml-1">{testimonial.productPurchased}</span>
+        </div>
+      </div>
+    )
   }
 
   if (testimonial.type === "video") {
@@ -171,6 +149,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
             src={testimonial.videoThumbnail! || "/placeholder.svg"}
             alt="Video review thumbnail"
             fill
+            sizes="(max-width: 768px) 100vw, 33vw"
             className="object-cover"
           />
 
@@ -250,13 +229,13 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           <span className="font-semibold text-black text-base">{testimonial.customerName}</span>
         </div>
         {/* Main Image */}
-        <div className="w-full rounded-xl overflow-hidden mb-4">
+        <div className="w-full rounded-xl overflow-hidden mb-4 relative h-[180px]">
           <Image
             src={testimonial.videoThumbnail || "/placeholder.svg"}
             alt="Instagram testimonial visual"
-            width={340}
-            height={180}
-            className="object-cover w-full h-[180px]"
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-cover"
           />
         </div>
         {/* Testimonial Text */}
@@ -273,4 +252,4 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   }
 
   return null
-}
+})

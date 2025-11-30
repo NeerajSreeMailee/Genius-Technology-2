@@ -43,13 +43,13 @@ export function ShopByBrand() {
                 ) : null}
 
                 {/* Logo Container */}
-                <div className="h-16 flex items-center justify-center mb-4 rounded-[15px]">
+                <div className="h-16 flex items-center justify-center mb-4 rounded-[15px] relative">
                   <Image
                     src={brand.logo || "/placeholder.svg"}
                     alt={brand.name}
-                    width={120}
-                    height={60}
-                    className="max-w-full max-h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                    fill
+                    sizes="(max-width: 768px) 50vw, 20vw"
+                    className="object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300 p-2"
                   />
                 </div>
 
@@ -62,47 +62,7 @@ export function ShopByBrand() {
               </Link>
             ))
           )}
-
-          {/* View All Brands Card
-          <Link
-            href="/brands"
-            className="group bg-gradient-to-br from-gray-100 to-gray-200 border-2 border-dashed border-gray-300 rounded-xl p-6 hover:from-orange-50 hover:to-orange-100 hover:border-orange-300 transition-all duration-300 hover:-translate-y-1 flex flex-col items-center justify-center"
-          >
-            <div className="w-12 h-12 bg-gray-400 group-hover:bg-orange-500 rounded-full flex items-center justify-center mb-4 transition-colors duration-300">
-              <span className="text-white text-2xl font-bold">+</span>
-            </div>
-            <h3 className="font-semibold text-gray-700 group-hover:text-orange-600 transition-colors duration-300">
-              View All Brands
-            </h3>
-            <p className="text-sm text-gray-500 group-hover:text-orange-500 transition-colors duration-300">
-              Explore More
-            </p>
-          </Link> */}
         </div>
-
-        {/* Featured Brands Showcase
-        <div className="bg-gradient-to-r from-orange-50 to-orange-100 rounded-2xl p-8">
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">Featured Brand Partners</h3>
-            <p className="text-gray-600">Trusted by millions of customers worldwide</p>
-          </div>
-
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-8 items-center">
-            {brands
-              .filter((brand) => brand.isPopular)
-              .map((brand) => (
-                <div key={brand.id} className="text-center">
-                  <Image
-                    src={brand.logo || "/placeholder.svg"}
-                    alt={brand.name}
-                    width={100}
-                    height={50}
-                    className="mx-auto filter grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
-                  />
-                </div>
-              ))}
-          </div>
-        </div> */}
       </div>
     </section>
   )

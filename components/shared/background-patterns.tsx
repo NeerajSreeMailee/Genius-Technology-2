@@ -27,7 +27,7 @@ export function BackgroundPatterns({ variant = "default" }: BackgroundPatternsPr
   const getOpacities = () => {
     // Force minimal patterns for mobile devices
     const effectiveVariant = shouldUseMinimal ? "mobile" : variant
-    
+
     switch (effectiveVariant) {
       case "mobile":
         return {
@@ -91,30 +91,30 @@ export function BackgroundPatterns({ variant = "default" }: BackgroundPatternsPr
   const opacities = getOpacities()
 
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10 opacity-50">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10 opacity-50">
       {/* ===== Enhanced Attractive Background with Rich Textures ===== */}
 
-      
+
       {/* Layer 1: Subtle Noise Texture (Base) */}
       <div className={`absolute inset-0 ${opacities.noise}`}>
         <div className="noise-texture-bg w-full h-full"></div>
       </div>
-      
+
       {/* Layer 2: Floating Particles */}
       <div className={`absolute inset-0 ${opacities.particles}`}>
         <div className="floating-particles-bg w-full h-full"></div>
       </div>
-      
+
       {/* Layer 3: Liquid Blobs Effect with Animation */}
       <div className={`absolute inset-0 ${opacities.blobs}`}>
         <div className="liquid-blobs-bg w-full h-full"></div>
       </div>
-      
+
       {/* Layer 4: Organic Flow */}
       <div className={`absolute inset-0 ${opacities.organic}`}>
         <div className="organic-flow-bg w-full h-full"></div>
       </div>
-      
+
       {/* Additional Textures */}
       <div className={`absolute inset-0 ${opacities.crosshatch}`}>
         <div className="crosshatch-bg w-full h-full"></div>
@@ -128,7 +128,7 @@ export function BackgroundPatterns({ variant = "default" }: BackgroundPatternsPr
       <div className={`absolute inset-0 ${opacities.bubble}`}>
         <div className="bubble-bg w-full h-full"></div>
       </div>
-      
+
       {/* Decorative Floating Elements - Optimized for Mobile */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         {!shouldUseMinimal && (
@@ -137,19 +137,19 @@ export function BackgroundPatterns({ variant = "default" }: BackgroundPatternsPr
             <div className="absolute top-20 left-10 w-64 h-64 rounded-full bg-gradient-to-r from-orange-300 to-amber-400 opacity-25 blur-3xl animate-float"></div>
             <div className="absolute top-1/3 right-20 w-48 h-48 rounded-full bg-gradient-to-r from-yellow-300 to-orange-400 opacity-20 blur-3xl animate-float-delayed"></div>
             <div className="absolute bottom-40 left-1/4 w-80 h-80 rounded-full bg-gradient-to-r from-amber-200 to-yellow-300 opacity-15 blur-3xl animate-float-reverse"></div>
-            
+
             {/* Medium Floating Orbs - Desktop only */}
             <div className="absolute top-1/4 right-1/4 w-24 h-24 rounded-full bg-gradient-to-r from-orange-400 to-yellow-400 opacity-25 blur-xl"></div>
             <div className="absolute bottom-1/3 left-1/3 w-32 h-32 rounded-full bg-gradient-to-r from-amber-300 to-orange-300 opacity-20 blur-xl"></div>
             <div className="absolute bottom-1/4 left-1/2 w-24 h-24 rounded-full bg-gradient-to-r from-yellow-400 to-amber-400 opacity-20 blur-xl"></div>
             <div className="absolute top-1/4 left-1/2 w-20 h-20 rounded-full bg-gradient-to-r from-amber-400 to-orange-400 opacity-25 blur-xl"></div>
-            
+
             {/* Small Floating Orbs - Desktop only */}
             <div className="absolute top-1/3 left-1/4 w-16 h-16 rounded-full bg-gradient-to-r from-orange-300 to-amber-300 opacity-30 blur-lg"></div>
             <div className="absolute bottom-1/2 right-1/3 w-12 h-12 rounded-full bg-gradient-to-r from-yellow-300 to-orange-300 opacity-25 blur-lg"></div>
           </>
         )}
-        
+
         {/* Mobile-friendly minimal decoration */}
         {shouldUseMinimal && (
           <>
@@ -157,10 +157,10 @@ export function BackgroundPatterns({ variant = "default" }: BackgroundPatternsPr
             <div className="absolute bottom-40 right-10 w-32 h-32 rounded-full bg-gradient-to-r from-yellow-300 to-orange-400 opacity-15 blur-2xl"></div>
           </>
         )}
-        
+
         {/* Additional Textured Elements - Conditional based on device */}
         <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-orange-200/20 via-yellow-100/10 to-amber-200/20 ${shouldUseMinimal ? 'opacity-50' : ''}`}></div>
-        
+
         {/* Subtle diagonal texture overlay - Reduced on mobile */}
         <div className={`absolute inset-0 bg-[repeating-linear-gradient(45deg,_transparent,_transparent_10px,_rgba(255,165,0,0.05)_10px,_rgba(255,165,0,0.05)_20px)] ${shouldUseMinimal ? 'opacity-30' : ''}`}></div>
       </div>
