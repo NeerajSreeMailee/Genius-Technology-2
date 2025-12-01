@@ -2,12 +2,41 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useBrands } from "@/lib/firebase-hooks"
+import { Skeleton } from "@/components/ui/skeleton"
+import type { Brand } from "@/types"
 import { BackgroundPatterns } from "@/components/shared/background-patterns"
 
-export function ShopByBrand() {
-  const { brands = [], loading } = useBrands()
+export const ShopByBrandSkeleton = () => {
+  return (
+    <section className="py-20 bg-gradient-to-br from-orange-50 via-white to-yellow-50 shadow-inner relative overflow-hidden">
+      <BackgroundPatterns />
+      <div className="container-custom relative z-10">
+        <div className="flex items-start justify-between">
+          <div className="mb-12">
+            <Skeleton className="h-10 w-64 mb-4" />
+            <Skeleton className="h-6 w-full max-w-[750px] mb-2" />
+            <Skeleton className="h-6 w-3/4 max-w-[600px]" />
+          </div>
+        </div>
 
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
+          {[...Array(10)].map((_, i) => (
+            <div key={i} className="bg-white border border-gray-200 rounded-xl p-6 h-[180px] flex flex-col items-center justify-center">
+              <Skeleton className="h-16 w-32 mb-4 rounded-lg" />
+              <Skeleton className="h-5 w-24 rounded-full" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+interface ShopByBrandProps {
+  brands: Brand[]
+}
+
+export function ShopByBrand({ brands }: ShopByBrandProps) {
   // defensive fallback
   const visibleBrands = Array.isArray(brands) ? brands : []
 
@@ -26,17 +55,17 @@ export function ShopByBrand() {
 
         {/* Brands Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
-          {loading ? (
-            <div className="col-span-full text-center text-gray-500">Loading brands...</div>
+          {visibleBrands.length === 0 ? (
+            <div className="col-span-full text-center text-gray-500 py-12">No brands available at the moment.</div>
           ) : (
-            visibleBrands.slice(0, 15).map((brand: any) => (
+            visibleBrands.slice(0, 15).map((brand) => (
               <Link
                 key={brand.id}
                 href={`/brand/${brand.slug}`}
                 className="group relative bg-white border border-gray-200 rounded-xl p-6 hover:border-orange-500 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 glass-card floating-card"
               >
                 {/* Popular Badge */}
-                {brand.featured || brand.isPopular ? (
+                {brand.featured || (brand as any).isPopular ? (
                   <div className="absolute -top-2 -right-2 bg-[#004AAD] text-white text-xs px-2 py-1 rounded-full">
                     Popular
                   </div>

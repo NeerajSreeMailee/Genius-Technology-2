@@ -73,7 +73,7 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
 
   // Generate properly encoded URL for the product
   const productUrl = `/mobile/${encodeURIComponent(product.id)}`
-  
+
   const discount = product.originalPrice && product.originalPrice > product.price
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0
@@ -82,10 +82,10 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
   const productImage = (() => {
     if (product?.images && Array.isArray(product.images) && product.images.length > 0) {
       // Find first valid https:// image URL
-      const validImage = product.images.find(img => 
-        img && 
-        typeof img === 'string' && 
-        img.trim().length > 0 && 
+      const validImage = product.images.find(img =>
+        img &&
+        typeof img === 'string' &&
+        img.trim().length > 0 &&
         img.startsWith('https://')
       )
       if (validImage) {
@@ -124,11 +124,11 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
             </div>
 
             <div className="flex-1 space-y-2">
-            <Link href={productUrl}>
-              <h3 className="font-semibold text-lg hover:text-blue-600 transition-colors line-clamp-2">
-                {productName}
-              </h3>
-            </Link>              <p className="text-gray-600 text-sm line-clamp-2">
+              <Link href={productUrl}>
+                <h3 className="font-semibold text-lg hover:text-blue-600 transition-colors line-clamp-2">
+                  {productName}
+                </h3>
+              </Link>              <p className="text-gray-600 text-sm line-clamp-2">
                 {productDescription}
               </p>
 
@@ -195,14 +195,14 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
       {/* Decorative element for grid view */}
       <div className="absolute -top-10 -right-10 w-24 h-24 bg-gradient-to-br from-orange-100 to-amber-100 rounded-full opacity-20"></div>
       <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-full opacity-15"></div>
-      
+
       {/* Additional textures and shapes */}
       <div className="absolute top-0 left-0 w-full h-full opacity-5">
         <div className="diamond-bg w-full h-full"></div>
       </div>
       <div className="absolute top-4 right-4 w-8 h-8 border-2 border-amber-200 opacity-20 transform rotate-45"></div>
       <div className="absolute bottom-4 left-4 w-6 h-6 rounded-full bg-gradient-to-r from-yellow-200 to-orange-200 opacity-25"></div>
-      
+
       <CardContent className="p-4 relative z-10">
         <div className="relative mb-4">
           <OptimizedImage
@@ -228,9 +228,8 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
             <Button
               size="sm"
               variant="secondary"
-              className={`h-8 w-8 p-0 rounded-full ${
-                isInWishlist(product.id) ? "bg-red-50 text-red-600" : ""
-              } floating-card`}
+              className={`h-8 w-8 p-0 rounded-full ${isInWishlist(product.id) ? "bg-red-50 text-red-600" : ""
+                } floating-card`}
               onClick={handleToggleWishlist}
               aria-label="Add to wishlist"
             >
@@ -247,9 +246,8 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
             <Button
               size="sm"
               variant="secondary"
-              className={`h-8 w-8 p-0 rounded-full ${
-                isInComparison(product.id) ? "bg-gray-100 text-gray-700" : ""
-              } floating-card`}
+              className={`h-8 w-8 p-0 rounded-full ${isInComparison(product.id) ? "bg-gray-100 text-gray-700" : ""
+                } floating-card`}
               onClick={handleAddToCompare}
               disabled={isInComparison(product.id)}
               aria-label="Add to comparison"

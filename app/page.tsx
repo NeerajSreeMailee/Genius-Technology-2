@@ -4,16 +4,10 @@ import dynamic from 'next/dynamic'
 // Static imports for above-the-fold content
 import { HeroSection } from "@/components/home/hero-section"
 
-// Dynamic imports for below-the-fold content - FIX: Handle named exports
-const TrendingDeals = dynamic(
-  () => import("@/components/home/trending-deals").then(mod => mod.TrendingDeals),
-  { loading: () => <div className="h-96 animate-pulse bg-gray-100" /> }
-)
+import { TrendingDealsContainer } from "@/components/home/trending-deals-container"
 
-const ShopByBrand = dynamic(
-  () => import("@/components/home/shop-by-brand").then(mod => mod.ShopByBrand),
-  { loading: () => <div className="h-64 animate-pulse bg-gray-100" /> }
-)
+import { ShopByBrandContainer } from "@/components/home/shop-by-brand-container"
+import { ShopByBrandSkeleton } from "@/components/home/shop-by-brand"
 
 const ShopByCategory = dynamic(
   () => import("@/components/home/shop-by-category").then(mod => mod.ShopByCategory),
@@ -36,19 +30,19 @@ export default function HomePage() {
   return (
     <>
       <HeroSection />
-      
+
       <Suspense fallback={<div className="h-96 animate-pulse bg-gray-100" />}>
-        <TrendingDeals />
+        <TrendingDealsContainer />
       </Suspense>
-      
-      <Suspense fallback={<div className="h-64 animate-pulse bg-gray-100" />}>
-        <ShopByBrand />
+
+      <Suspense fallback={<ShopByBrandSkeleton />}>
+        <ShopByBrandContainer />
       </Suspense>
-      
+
       <Suspense fallback={<div className="h-64 animate-pulse bg-gray-100" />}>
         <ShopByCategory />
       </Suspense>
-      
+
       <Suspense fallback={<div className="h-96 animate-pulse bg-gray-100" />}>
         <CustomerTestimonials />
       </Suspense>

@@ -27,12 +27,12 @@ export default function CategoryClientPage({ params, initialData }: CategoryClie
 
   // Capitalize the category to match Firebase field values (Display, Battery)
   const categoryForQuery = params.category.charAt(0).toUpperCase() + params.category.slice(1)
-  
+
   const { mobiles, loading, error } = useMobileCollectionByCategory(categoryForQuery)
-  
+
   // Debug: fetch all items to see what's available
   const { mobiles: allMobiles } = useAllMobileCollectionItems()
-  
+
   useEffect(() => {
     console.log('CategoryClientPage - Category param:', params.category)
     console.log('CategoryClientPage - Category for query:', categoryForQuery)
@@ -122,102 +122,101 @@ export default function CategoryClientPage({ params, initialData }: CategoryClie
 
   return (
     <>
-    <Header />
-    <div className="container mx-auto px-4 py-8 pt-32 relative overflow-hidden">
-      <BackgroundPatterns />
-      <div className="mb-8 relative z-10 glass-card p-6 rounded-xl">
-        <Breadcrumb items={breadcrumbItems} />
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">{categoryName} Products</h1>
-        <p className="text-gray-600">
-          Discover our collection of {categoryName.toLowerCase()} products ({filteredProducts.length} items)
-        </p>
-      </div>
+      <Header />
+      <div className="container mx-auto px-4 py-8 pt-32 relative overflow-hidden">
+        <BackgroundPatterns />
+        <div className="mb-8 relative z-10 glass-card p-6 rounded-xl">
+          <Breadcrumb items={breadcrumbItems} />
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">{categoryName} Products</h1>
+          <p className="text-gray-600">
+            Discover our collection of {categoryName.toLowerCase()} products ({filteredProducts.length} items)
+          </p>
+        </div>
 
-      {/* Filter and Search Bar with Gradient Border */}
-      <div className="mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between gradient-border rounded-xl p-4 bg-white relative z-10">
-        <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
-          <Input
-            type="text"
-            placeholder="Search products..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 glass-card"
-          />
-        </div>
-        
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <Filter className="h-4 w-4 text-gray-600" />
-            <span className="text-sm text-gray-600">Sort by:</span>
+        {/* Filter and Search Bar with Gradient Border */}
+        <div className="mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between gradient-border rounded-xl p-4 bg-white relative z-10">
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
+            <Input
+              type="text"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 glass-card"
+            />
           </div>
-          <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="w-40 glass-card">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="name">Name A-Z</SelectItem>
-              <SelectItem value="price-low">Price: Low to High</SelectItem>
-              <SelectItem value="price-high">Price: High to Low</SelectItem>
-              <SelectItem value="newest">Newest First</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
 
-      {/* Products Grid with Floating Card Effect */}
-      {filteredProducts.length === 0 ? (
-        <div className="text-center py-12 relative z-10">
-          <div className="neon-glow-card rounded-xl p-8 max-w-md mx-auto">
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              {searchQuery ? "No products found" : "No products available"}
-            </h3>
-            <p className="text-gray-600">
-              {searchQuery 
-                ? `No products match your search "${searchQuery}" in the ${categoryName.toLowerCase()} category.`
-                : `No products available in the ${categoryName.toLowerCase()} category at the moment.`
-              }
-            </p>
-            {searchQuery && (
-              <Button variant="outline" onClick={() => setSearchQuery("")} className="mt-4 floating-card">
-                Clear Search
-              </Button>
-            )}
-          </div>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 relative z-10">
-          {filteredProducts.map((product) => (
-            <div key={product.id} className="floating-card">
-              <ProductCard 
-                product={{
-                  id: product.id,
-                  // Use document ID as the product name since there's no title field
-                  name: product.id || 'Unknown Product',
-                  price: product.price || product.Price || 0,
-                  originalPrice: product.originalPrice || product.OriginalPrice,
-                  images: product.images || product.Images || [product.image || product.Image],
-                  rating: product.rating || product.Rating || 4.5,
-                  reviewCount: product.reviews || product.Reviews || 0,
-                  category: product.category || product.Category || '',
-                  brand: product.brand || product.Brand || '',
-                  sku: product.sku || product.SKU || product.id,
-                  stock: product.stock || product.Stock || 1,
-                  isActive: product.isActive !== false,
-                  isFeatured: product.featured || product.Featured || false,
-                  description: product.description || product.Description || "",
-                  features: product.features || product.Features || [],
-                  specifications: product.specifications || product.Specifications || {},
-                  createdAt: product.createdAt || new Date(),
-                  updatedAt: product.updatedAt || new Date()
-                }}
-              />
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Filter className="h-4 w-4 text-gray-600" />
+              <span className="text-sm text-gray-600">Sort by:</span>
             </div>
-          ))}
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger className="w-40 glass-card">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="name">Name A-Z</SelectItem>
+                <SelectItem value="price-low">Price: Low to High</SelectItem>
+                <SelectItem value="price-high">Price: High to Low</SelectItem>
+                <SelectItem value="newest">Newest First</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
-      )}
-    </div>
-    <Footer />
+
+        {/* Products Grid with Floating Card Effect */}
+        {filteredProducts.length === 0 ? (
+          <div className="text-center py-12 relative z-10">
+            <div className="neon-glow-card rounded-xl p-8 max-w-md mx-auto">
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                {searchQuery ? "No products found" : "No products available"}
+              </h3>
+              <p className="text-gray-600">
+                {searchQuery
+                  ? `No products match your search "${searchQuery}" in the ${categoryName.toLowerCase()} category.`
+                  : `No products available in the ${categoryName.toLowerCase()} category at the moment.`
+                }
+              </p>
+              {searchQuery && (
+                <Button variant="outline" onClick={() => setSearchQuery("")} className="mt-4 floating-card">
+                  Clear Search
+                </Button>
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 relative z-10">
+            {filteredProducts.map((product) => (
+              <div key={product.id} className="floating-card">
+                <ProductCard
+                  product={{
+                    id: product.id,
+                    // Use document ID as the product name since there's no title field
+                    name: product.id || 'Unknown Product',
+                    price: product.price || product.Price || 0,
+                    originalPrice: product.originalPrice || product.OriginalPrice,
+                    images: product.images || product.Images || [product.image || product.Image],
+                    rating: product.rating || product.Rating || 4.5,
+                    reviewCount: product.reviews || product.Reviews || 0,
+                    category: product.category || product.Category || '',
+                    brand: product.brand || product.Brand || '',
+                    sku: product.sku || product.SKU || product.id,
+                    stock: product.stock || product.Stock || 1,
+                    isActive: product.isActive !== false,
+                    isFeatured: product.featured || product.Featured || false,
+                    description: product.description || product.Description || "",
+                    features: product.features || product.Features || [],
+                    specifications: product.specifications || product.Specifications || {},
+                    createdAt: product.createdAt || new Date(),
+                    updatedAt: product.updatedAt || new Date()
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </>
   )
 }
